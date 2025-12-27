@@ -13,6 +13,7 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pokemons'),
+        toolbarHeight: 200,
       ),
       body: Container(),
     );

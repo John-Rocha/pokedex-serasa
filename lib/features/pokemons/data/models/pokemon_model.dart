@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:equatable/equatable.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
@@ -86,11 +88,11 @@ class PokemonModel extends Equatable {
       candy: json['candy'] as String,
       candyCount: json['candy_count'] as int?,
       egg: json['egg'] as String,
-      spawnChance: json['spawn_chance'] as double,
-      avgSpawns: json['avg_spawns'] as double,
+      spawnChance: _toDouble(json['spawn_chance']),
+      avgSpawns: _toDouble(json['avg_spawns']),
       spawnTime: json['spawn_time'] as String,
       multipliers: (json['multipliers'] as List<dynamic>?)
-          ?.map((e) => e as double)
+          ?.map((e) => _toDouble(e))
           .toList(),
       weaknesses: (json['weaknesses'] as List<dynamic>)
           .map((e) => e as String)
@@ -102,6 +104,12 @@ class PokemonModel extends Equatable {
           ?.map((e) => EvolutionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  static double _toDouble(dynamic value) {
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    return double.parse(value.toString());
   }
 
   Pokemon toEntity() {

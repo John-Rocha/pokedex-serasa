@@ -9,6 +9,7 @@ import 'package:pokedex_serasa/features/pokemons/data/datasources/pokemons_remot
 import 'package:pokedex_serasa/features/pokemons/data/repositories/pokemons_repository_impl.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/repositories/pokemons_repository.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/usecases/get_pokemons.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_list/pokemons_list_cubit.dart';
 import 'package:pokedex_serasa/features/splash/presentation/pages/splash_page.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/pages/pokemons_list_page.dart';
 
@@ -61,6 +62,8 @@ class AppModule extends Module {
     );
 
     i.addLazySingleton(() => GetPokemons(repository: i()));
+
+    i.addLazySingleton(() => PokemonsListCubit(getPokemons: i()));
   }
 
   @override

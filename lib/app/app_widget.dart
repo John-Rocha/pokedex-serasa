@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pokedex_serasa/core/theme/app_theme.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -8,7 +9,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Pokedex Serasa',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: AppTheme.theme(),
       routerConfig: Modular.routerConfig,
     );
   }
