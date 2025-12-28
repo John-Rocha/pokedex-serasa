@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:pokedex_serasa/core/theme/app_colors.dart';
+import 'package:pokedex_serasa/core/theme/app_text_styles.dart';
+
+class PokemonHeaderWidget extends StatelessWidget {
+  const PokemonHeaderWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      pinned: true,
+      backgroundColor: Colors.white,
+      foregroundColor: AppColors.primaryRed,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      expandedHeight: MediaQuery.sizeOf(context).height * 0.5,
+      collapsedHeight: 200,
+      automaticallyImplyLeading: true,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: 180,
+                  width: double.infinity,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryRed,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(24),
+                      bottomRight: Radius.circular(24),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, top: 48.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Pokédex',
+                          style: AppTextStyles.appBarTitle,
+                        ),
+                        const SizedBox(height: 8),
+                        SvgPicture.asset(
+                          'assets/images/pokeball.svg',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Center(
+              child: Image.asset(
+                'assets/images/koraidon.png',
+                width: double.infinity,
+              ),
+            ),
+            Positioned(
+              bottom: 12,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.white.withAlpha(250),
+                      Colors.white,
+                    ],
+                    stops: const [0.0, 0.5, 1.0],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 24,
+              right: 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  Text(
+                    'Explore o incrível mundo dos Pokémon.',
+                    style: AppTextStyles.displayMedium,
+                  ),
+                  Text(
+                    'Descubra informações detalhadas sobre seus personagens favoritos.',
+                    style: AppTextStyles.subtitle1,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '+1000k',
+                        style: AppTextStyles.pokemonCounter,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Pokémons',
+                        style: AppTextStyles.pokemonCounterLabel,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        titlePadding: EdgeInsets.all(24),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Pokédex',
+              style: AppTextStyles.appBarTitle.copyWith(
+                color: AppColors.black,
+              ),
+            ),
+            SvgPicture.asset(
+              'assets/images/pokeball.svg',
+              width: 24,
+              height: 24,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

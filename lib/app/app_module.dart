@@ -30,9 +30,7 @@ class AppModule extends Module {
         dio.interceptors.add(
           LogInterceptor(
             requestBody: true,
-            responseBody: true,
             requestHeader: true,
-            responseHeader: true,
             error: true,
             logPrint: (log) => print('[DIO] $log'),
           ),
