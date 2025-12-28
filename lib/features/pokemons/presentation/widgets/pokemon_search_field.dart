@@ -1,0 +1,118 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:pokedex_serasa/core/theme/app_colors.dart';
+
+class PokemonSearchField extends StatefulWidget {
+  final Function(String) onSearch;
+  final VoidCallback? onClear;
+
+  const PokemonSearchField({
+    required this.onSearch,
+    this.onClear,
+    super.key,
+  });
+
+  @override
+  State<PokemonSearchField> createState() => _PokemonSearchFieldState();
+}
+
+class _PokemonSearchFieldState extends State<PokemonSearchField> {
+  final TextEditingController _controller = TextEditingController();
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      widget.onSearch(query);
+    });
+  }
+
+  void _clearSearch() {
+    _controller.clear();
+    widget.onSearch('');
+    widget.onClear?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(25),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: _controller,
+        onChanged: _onSearchChanged,
+        decoration: InputDecoration(
+          hintText: 'Buscar Pokémon por nome ou número',
+          hintStyle: TextStyle(
+            color: Colors.grey[400],
+            fontSize: 14,
+          ),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: AppColors.primaryRed,
+          ),
+          suffixIcon: _controller.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.clear,
+                    color: Colors.grey,
+                  ),
+                  onPressed: _clearSearch,
+                )
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppColors.primaryRed,
+              width: 2,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
+}
