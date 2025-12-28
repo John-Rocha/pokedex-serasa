@@ -16,9 +16,7 @@ class PokemonHeaderWidget extends StatelessWidget {
       foregroundColor: AppColors.primaryRed,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      expandedHeight: MediaQuery.sizeOf(context).height * 0.5,
-      collapsedHeight: 200,
-      automaticallyImplyLeading: true,
+      expandedHeight: MediaQuery.sizeOf(context).height * 0.7,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
@@ -117,23 +115,23 @@ class PokemonHeaderWidget extends StatelessWidget {
             ),
           ],
         ),
-        titlePadding: EdgeInsets.all(24),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Pokédex',
-              style: AppTextStyles.appBarTitle.copyWith(
-                color: AppColors.black,
-              ),
-            ),
-            SvgPicture.asset(
-              'assets/images/pokeball.svg',
-              width: 24,
-              height: 24,
-            ),
-          ],
-        ),
+        // titlePadding: EdgeInsets.all(24),
+        // title: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Text(
+        //       'Pokédex',
+        //       style: AppTextStyles.appBarTitle.copyWith(
+        //         color: AppColors.black,
+        //       ),
+        //     ),
+        //     SvgPicture.asset(
+        //       'assets/images/pokeball.svg',
+        //       width: 24,
+        //       height: 24,
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
