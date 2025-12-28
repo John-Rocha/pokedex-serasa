@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pokedex_serasa/core/enums/sort_order.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
 sealed class PokemonsListState extends Equatable {
@@ -18,15 +19,27 @@ class PokemonsListLoading extends PokemonsListState {
 
 class PokemonsListSuccess extends PokemonsListState {
   final List<Pokemon> pokemons;
+  final List<Pokemon> allPokemons;
   final bool isFromLocalSource;
+  final SortOrder sortOrder;
+  final String? typeFilter;
 
   const PokemonsListSuccess({
     required this.pokemons,
+    required this.allPokemons,
     this.isFromLocalSource = false,
+    this.sortOrder = SortOrder.none,
+    this.typeFilter,
   });
 
   @override
-  List<Object?> get props => [pokemons, isFromLocalSource];
+  List<Object?> get props => [
+    pokemons,
+    allPokemons,
+    isFromLocalSource,
+    sortOrder,
+    typeFilter,
+  ];
 }
 
 class PokemonsListError extends PokemonsListState {

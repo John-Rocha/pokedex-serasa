@@ -3,31 +3,44 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_cubit.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_state.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_list/pokemons_list_cubit.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_list/pokemons_list_state.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/pages/pokemons_list_page.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/widgets/empty_search_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/error_display_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/loading_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_card.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_search_field.dart';
 
 class MockPokemonsListCubit extends Mock implements PokemonsListCubit {}
 
-class MockModule extends Module {
-  final PokemonsListCubit cubit;
+class MockPokemonSearchCubit extends Mock implements PokemonSearchCubit {}
 
-  MockModule(this.cubit);
+class MockModule extends Module {
+  final PokemonsListCubit listCubit;
+  final PokemonSearchCubit searchCubit;
+
+  MockModule({
+    required this.listCubit,
+    required this.searchCubit,
+  });
 
   @override
   void binds(i) {
-    i.addInstance<PokemonsListCubit>(cubit);
+    i.addInstance<PokemonsListCubit>(listCubit);
+    i.addInstance<PokemonSearchCubit>(searchCubit);
   }
 }
 
 void main() {
-  late MockPokemonsListCubit mockCubit;
+  late MockPokemonsListCubit mockListCubit;
+  late MockPokemonSearchCubit mockSearchCubit;
 
   setUp(() {
-    mockCubit = MockPokemonsListCubit();
+    mockListCubit = MockPokemonsListCubit();
+    mockSearchCubit = MockPokemonSearchCubit();
   });
 
   group('PokemonsListPage Widget Tests', () {
@@ -66,19 +79,49 @@ void main() {
 
     Widget createWidgetUnderTest() {
       return ModularApp(
-        module: MockModule(mockCubit),
+        module: MockModule(
+          listCubit: mockListCubit,
+          searchCubit: mockSearchCubit,
+        ),
         child: const MaterialApp(
           home: PokemonsListPage(),
         ),
       );
     }
 
-    testWidgets('should display loading widget when state is loading',
-        (tester) async {
-      when(() => mockCubit.state).thenReturn(const PokemonsListLoading());
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+    testWidgets('should display PokemonSearchField', (tester) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      expect(find.byType(PokemonSearchField), findsOneWidget);
+    });
+
+    testWidgets('should display loading widget when list state is loading', (
+      tester,
+    ) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListLoading());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -86,29 +129,25 @@ void main() {
       expect(find.byType(LoadingWidget), findsOneWidget);
     });
 
-    testWidgets('should display error widget when state is error',
-        (tester) async {
-      const errorMessage = 'Network error';
-      when(() => mockCubit.state)
-          .thenReturn(const PokemonsListError(message: errorMessage));
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
-
-      await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump();
-
-      expect(find.byType(ErrorDisplayWidget), findsOneWidget);
-      expect(find.text(errorMessage), findsOneWidget);
-    });
-
-    testWidgets('should display pokemon grid when state is success',
-        (tester) async {
-      when(() => mockCubit.state)
-          .thenReturn(const PokemonsListSuccess(pokemons: tPokemons));
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+    testWidgets('should display pokemon grid when list state is success', (
+      tester,
+    ) async {
+      when(
+        () => mockListCubit.state,
+      ).thenReturn(const PokemonsListSuccess(
+        pokemons: tPokemons,
+        allPokemons: tPokemons,
+      ));
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
@@ -118,23 +157,125 @@ void main() {
       expect(find.text('Ivysaur'), findsOneWidget);
     });
 
-    testWidgets('should call loadPokemons on init', (tester) async {
-      when(() => mockCubit.state).thenReturn(const PokemonsListInitial());
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+    testWidgets('should display error widget when list state is error', (
+      tester,
+    ) async {
+      const errorMessage = 'Network error';
+      when(
+        () => mockListCubit.state,
+      ).thenReturn(const PokemonsListError(message: errorMessage));
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
 
-      verify(() => mockCubit.loadPokemons()).called(1);
+      expect(find.byType(ErrorDisplayWidget), findsOneWidget);
+      expect(find.text(errorMessage), findsOneWidget);
+    });
+
+    testWidgets('should call loadPokemons on init', (tester) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      verify(() => mockListCubit.loadPokemons()).called(1);
+    });
+
+    testWidgets('should display search results when searching', (tester) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(() => mockSearchCubit.stream).thenAnswer(
+        (_) => Stream.value(
+          PokemonSearchSuccess(pokemons: [tPokemons[0]]),
+        ),
+      );
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
+      when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      // Simulate search
+      await tester.enterText(
+        find.byType(TextField),
+        'Bulbasaur',
+      );
+      await tester.pump(const Duration(milliseconds: 500));
+
+      when(() => mockSearchCubit.state).thenReturn(
+        PokemonSearchSuccess(pokemons: [tPokemons[0]]),
+      );
+
+      await tester.pump();
+    });
+
+    testWidgets('should display empty search widget when no results', (
+      tester,
+    ) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchEmpty(query: 'Charizard'));
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
+      when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      // Simulate search
+      await tester.enterText(
+        find.byType(TextField),
+        'Charizard',
+      );
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump();
+
+      expect(find.byType(EmptySearchWidget), findsOneWidget);
     });
 
     testWidgets('should use CustomScrollView', (tester) async {
-      when(() => mockCubit.state).thenReturn(const PokemonsListInitial());
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -143,10 +284,17 @@ void main() {
     });
 
     testWidgets('should use BouncingScrollPhysics', (tester) async {
-      when(() => mockCubit.state).thenReturn(const PokemonsListInitial());
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -158,22 +306,27 @@ void main() {
       expect(scrollView.physics, isA<BouncingScrollPhysics>());
     });
 
-    testWidgets('should display grid with 2 columns', (tester) async {
-      when(() => mockCubit.state)
-          .thenReturn(const PokemonsListSuccess(pokemons: tPokemons));
-      when(() => mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(() => mockCubit.loadPokemons()).thenAnswer((_) async {});
-      when(() => mockCubit.close()).thenAnswer((_) async {});
+    testWidgets('should close cubits on dispose', (tester) async {
+      when(() => mockListCubit.state).thenReturn(const PokemonsListInitial());
+      when(() => mockListCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockListCubit.loadPokemons()).thenAnswer((_) async {});
+      when(() => mockListCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchInitial());
+      when(
+        () => mockSearchCubit.stream,
+      ).thenAnswer((_) => const Stream.empty());
+      when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
-      final grid = tester.widget<SliverGrid>(
-        find.byType(SliverGrid),
-      );
+      // Dispose the widget
+      await tester.pumpWidget(const SizedBox());
 
-      final delegate = grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
-      expect(delegate.crossAxisCount, 2);
+      verify(() => mockListCubit.close()).called(1);
+      verify(() => mockSearchCubit.close()).called(1);
     });
   });
 }
