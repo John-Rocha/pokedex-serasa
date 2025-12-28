@@ -6,7 +6,7 @@ import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_li
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/error_display_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_header_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/loading_widget.dart';
-import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_card.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemons_grid_widget.dart';
 
 class PokemonsListPage extends StatefulWidget {
   const PokemonsListPage({super.key});
@@ -45,32 +45,9 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
                 PokemonsListLoading() => SliverFillRemaining(
                   child: LoadingWidget(),
                 ),
-
-                PokemonsListSuccess() => SliverPadding(
-                  padding: const EdgeInsets.all(16),
-                  sliver: SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.0,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final pokemon = state.pokemons[index];
-                        return PokemonCard(
-                          pokemon: pokemon,
-                          onTap: () {
-                            print('Tapped on ${pokemon.name}');
-                          },
-                        );
-                      },
-                      childCount: state.pokemons.length,
-                    ),
-                  ),
+                PokemonsListSuccess(:final pokemons) => PokemonGridWidget(
+                  pokemons: pokemons,
                 ),
-
                 PokemonsListError() => SliverFillRemaining(
                   child: ErrorDisplayWidget(
                     message: state.message,
