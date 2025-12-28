@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_serasa/core/theme/app_colors.dart';
 
 abstract class AppTextStyles {
+  static const String fontFamily = 'Roboto';
+
+  static const TextStyle displayMedium = TextStyle(
+    fontSize: 32,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w400,
+    color: AppColors.black,
+    height: 1.2,
+  );
   static const TextStyle headline1 = TextStyle(
     fontSize: 32,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w400,
     color: AppColors.black,
     height: 1.2,
   );
@@ -17,8 +26,8 @@ abstract class AppTextStyles {
   );
 
   static const TextStyle pokemonCounter = TextStyle(
-    fontSize: 56,
-    fontWeight: FontWeight.bold,
+    fontSize: 40,
+    fontWeight: FontWeight.w400,
     color: AppColors.primaryRed,
     height: 1.2,
   );
@@ -26,7 +35,7 @@ abstract class AppTextStyles {
   static const TextStyle pokemonCounterLabel = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.normal,
-    color: AppColors.black,
+    color: AppColors.primaryRed,
     height: 1.2,
   );
 
