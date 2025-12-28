@@ -25,12 +25,6 @@ abstract class AppTheme {
           size: 24,
         ),
       ),
-      textTheme: const TextTheme(
-        headlineLarge: AppTextStyles.headline1,
-        titleMedium: AppTextStyles.subtitle1,
-        displayLarge: AppTextStyles.pokemonCounter,
-        bodyLarge: AppTextStyles.pokemonCounterLabel,
-      ),
       iconTheme: const IconThemeData(
         color: AppColors.primaryRed,
         size: 24,
