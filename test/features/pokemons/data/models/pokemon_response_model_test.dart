@@ -49,8 +49,8 @@ void main() {
               'spawn_time': '20:00',
               'multipliers': [1.58],
               'weaknesses': ['Fire', 'Ice'],
-            }
-          ]
+            },
+          ],
         };
 
         final result = PokemonResponseModel.fromJson(jsonMap);
@@ -79,7 +79,7 @@ void main() {
               'spawn_time': '12:00',
               'weaknesses': ['Fire'],
             },
-          )
+          ),
         };
 
         final result = PokemonResponseModel.fromJson(jsonMap);
@@ -96,7 +96,6 @@ void main() {
 
         final result = PokemonResponseModel.fromJson(jsonMap);
 
-        expect(result.pokemon.every((p) => p is PokemonModel), true);
         expect(result.pokemon[0], isA<PokemonModel>());
         expect(result.pokemon[1], isA<PokemonModel>());
       });
@@ -217,16 +216,14 @@ void main() {
         const response = PokemonResponseModel(pokemon: [pokemon]);
 
         expect(response.props, [
-          [pokemon]
+          [pokemon],
         ]);
       });
 
       test('should have props with empty list', () {
         const response = PokemonResponseModel(pokemon: []);
 
-        expect(response.props, [
-          []
-        ]);
+        expect(response.props, [[]]);
       });
     });
 
@@ -303,8 +300,8 @@ void main() {
               'avg_spawns': 21,
               'spawn_time': '04:00',
               'weaknesses': ['Ground'],
-            }
-          ]
+            },
+          ],
         };
 
         final response = PokemonResponseModel.fromJson(jsonMap);
