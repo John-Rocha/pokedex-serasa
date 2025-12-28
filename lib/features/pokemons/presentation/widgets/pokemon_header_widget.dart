@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pokedex_serasa/core/theme/app_colors.dart';
 import 'package:pokedex_serasa/core/theme/app_text_styles.dart';
+import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_search_field.dart';
 
 class PokemonHeaderWidget extends StatelessWidget {
+  final Function(String) onSearch;
+  final VoidCallback? onClearSearch;
+
   const PokemonHeaderWidget({
+    required this.onSearch,
+    this.onClearSearch,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
     return SliverAppBar(
       pinned: true,
       backgroundColor: Colors.white,
@@ -17,7 +25,9 @@ class PokemonHeaderWidget extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       expandedHeight: MediaQuery.sizeOf(context).height * 0.7,
+      toolbarHeight: 0,
       flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
         background: Stack(
           children: [
             Column(
@@ -34,7 +44,10 @@ class PokemonHeaderWidget extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0, top: 48.0),
+                    padding: EdgeInsets.only(
+                      left: 16.0,
+                      top: statusBarHeight + 16,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -115,23 +128,16 @@ class PokemonHeaderWidget extends StatelessWidget {
             ),
           ],
         ),
-        // titlePadding: EdgeInsets.all(24),
-        // title: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Text(
-        //       'Pokédex',
-        //       style: AppTextStyles.appBarTitle.copyWith(
-        //         color: AppColors.black,
-        //       ),
-        //     ),
-        //     SvgPicture.asset(
-        //       'assets/images/pokeball.svg',
-        //       width: 24,
-        //       height: 24,
-        //     ),
-        //   ],
-        // ),
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(72),
+        child: Container(
+          color: Colors.white,
+          child: PokemonSearchField(
+            onSearch: onSearch,
+            onClear: onClearSearch,
+          ),
+        ),
       ),
     );
   }

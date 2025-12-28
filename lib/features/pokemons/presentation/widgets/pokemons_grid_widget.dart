@@ -26,9 +26,7 @@ class PokemonGridWidget extends StatelessWidget {
             final pokemon = pokemons[index];
             return PokemonCard(
               pokemon: pokemon,
-              onTap: () {
-                print('Tapped on ${pokemon.name}');
-              },
+              onTap: () {},
             );
           },
           childCount: pokemons.length,
