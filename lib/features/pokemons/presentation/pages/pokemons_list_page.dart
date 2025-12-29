@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex_serasa/core/enums/sort_order.dart';
 import 'package:pokedex_serasa/core/utils/pokemon_types_helper.dart';
+import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_cubit.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_state.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_list/pokemons_list_cubit.dart';
@@ -87,7 +88,6 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
   }
 
   void _showAdvancedFilters() {
-    // Extrai tipos disponíveis dos pokémons carregados
     if (_listCubit.state is PokemonsListSuccess) {
       final state = _listCubit.state as PokemonsListSuccess;
       _availableTypes = PokemonTypesHelper.extractUniqueTypes(
@@ -95,7 +95,6 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
       );
     }
 
-    // Pega os filtros atuais do cubit apropriado
     final currentSortOrder = _isSearching
         ? _searchCubit.currentSortOrder
         : _listCubit.currentSortOrder;
@@ -135,7 +134,6 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
             onClearSearch: _onClearSearch,
           ),
 
-          // Barra de Filtros Rápidos
           if (_showFiltersBar)
             SliverToBoxAdapter(
               child: _isSearching
@@ -169,9 +167,11 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
                     ),
             ),
 
-          // Conteúdo
           if (_isSearching)
-            _PokemonSearchContent(searchCubit: _searchCubit)
+            _PokemonSearchContent(
+              searchCubit: _searchCubit,
+              listCubit: _listCubit,
+            )
           else
             _PokemonListContent(
               listCubit: _listCubit,
@@ -185,10 +185,12 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
 
 class _PokemonSearchContent extends StatelessWidget {
   final PokemonSearchCubit searchCubit;
+  final PokemonsListCubit _listCubit;
 
   const _PokemonSearchContent({
     required this.searchCubit,
-  });
+    required PokemonsListCubit listCubit,
+  }) : _listCubit = listCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +212,9 @@ class _PokemonSearchContent extends StatelessWidget {
           PokemonSearchLoading() => const SliverFillRemaining(
             child: LoadingWidget(),
           ),
-          PokemonSearchSuccess(:final pokemons) => PokemonGridWidget(
+          PokemonSearchSuccess(:final pokemons) => _PokemonGridBuilder(
             pokemons: pokemons,
+            listCubit: _listCubit,
           ),
           PokemonSearchEmpty(:final query) => SliverFillRemaining(
             child: EmptySearchWidget(query: query),
@@ -247,9 +250,11 @@ class _PokemonListContent extends StatelessWidget {
           PokemonsListLoading() => const SliverFillRemaining(
             child: LoadingWidget(),
           ),
-          PokemonsListSuccess(:final pokemons) => PokemonGridWidget(
-            pokemons: pokemons,
-          ),
+          PokemonsListSuccess(:final pokemons, :final allPokemons) =>
+            PokemonGridWidget(
+              pokemons: pokemons,
+              allPokemons: allPokemons,
+            ),
           PokemonsListError(:final message) => SliverFillRemaining(
             child: ErrorDisplayWidget(
               message: message,
@@ -258,6 +263,28 @@ class _PokemonListContent extends StatelessWidget {
           ),
         };
       },
+    );
+  }
+}
+
+class _PokemonGridBuilder extends StatelessWidget {
+  final List<Pokemon> pokemons;
+  final PokemonsListCubit listCubit;
+
+  const _PokemonGridBuilder({
+    required this.pokemons,
+    required this.listCubit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final allPokemons = listCubit.state is PokemonsListSuccess
+        ? (listCubit.state as PokemonsListSuccess).allPokemons
+        : null;
+
+    return PokemonGridWidget(
+      pokemons: pokemons,
+      allPokemons: allPokemons,
     );
   }
 }

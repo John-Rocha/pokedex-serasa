@@ -14,6 +14,8 @@ import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_sea
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemons_list/pokemons_list_cubit.dart';
 import 'package:pokedex_serasa/features/splash/presentation/pages/splash_page.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/pages/pokemons_list_page.dart';
+import 'package:pokedex_serasa/features/pokemon_detail/presentation/pages/pokemon_detail_page.dart';
+import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
 class AppModule extends Module {
   @override
@@ -26,15 +28,6 @@ class AppModule extends Module {
                 'https://raw.githubusercontent.com/Biuni/PokemonGo-Pokedex/master',
             connectTimeout: const Duration(seconds: 30),
             receiveTimeout: const Duration(seconds: 30),
-          ),
-        );
-
-        dio.interceptors.add(
-          LogInterceptor(
-            requestBody: true,
-            requestHeader: true,
-            error: true,
-            logPrint: (log) => print('[DIO] $log'),
           ),
         );
 
@@ -77,6 +70,21 @@ class AppModule extends Module {
     r.child(
       '/pokemons/',
       child: (_) => const PokemonsListPage(),
+    );
+    r.child(
+      '/pokemon-detail/',
+      child: (_) {
+        final args = r.args.data;
+        if (args is Map) {
+          return PokemonDetailPage(
+            pokemon: args['pokemon'] as Pokemon,
+            allPokemons: args['allPokemons'] as List<Pokemon>?,
+          );
+        }
+        return PokemonDetailPage(
+          pokemon: args as Pokemon,
+        );
+      },
     );
   }
 }

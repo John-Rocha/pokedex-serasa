@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_card.dart';
 
 class PokemonGridWidget extends StatelessWidget {
   const PokemonGridWidget({
     required this.pokemons,
+    this.allPokemons,
     super.key,
   });
 
   final List<Pokemon> pokemons;
+  final List<Pokemon>? allPokemons;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,15 @@ class PokemonGridWidget extends StatelessWidget {
             final pokemon = pokemons[index];
             return PokemonCard(
               pokemon: pokemon,
-              onTap: () {},
+              onTap: () {
+                Modular.to.pushNamed(
+                  '/pokemon-detail/',
+                  arguments: {
+                    'pokemon': pokemon,
+                    'allPokemons': allPokemons ?? pokemons,
+                  },
+                );
+              },
             );
           },
           childCount: pokemons.length,
