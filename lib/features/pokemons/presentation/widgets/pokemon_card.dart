@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_serasa/core/utils/pokemon_type_colors.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
 class PokemonCard extends StatelessWidget {
@@ -11,53 +12,10 @@ class PokemonCard extends StatelessWidget {
     super.key,
   });
 
-  Color _getTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'grass':
-        return const Color(0xFF78C850);
-      case 'poison':
-        return const Color(0xFFA040A0);
-      case 'fire':
-        return const Color(0xFFF08030);
-      case 'water':
-        return const Color(0xFF6890F0);
-      case 'bug':
-        return const Color(0xFFA8B820);
-      case 'normal':
-        return const Color(0xFFA8A878);
-      case 'electric':
-        return const Color(0xFFF8D030);
-      case 'ground':
-        return const Color(0xFFE0C068);
-      case 'fairy':
-        return const Color(0xFFEE99AC);
-      case 'fighting':
-        return const Color(0xFFC03028);
-      case 'psychic':
-        return const Color(0xFFF85888);
-      case 'rock':
-        return const Color(0xFFB8A038);
-      case 'ghost':
-        return const Color(0xFF705898);
-      case 'ice':
-        return const Color(0xFF98D8D8);
-      case 'dragon':
-        return const Color(0xFF7038F8);
-      case 'dark':
-        return const Color(0xFF705848);
-      case 'steel':
-        return const Color(0xFFB8B8D0);
-      case 'flying':
-        return const Color(0xFFA890F0);
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final primaryType = pokemon.type.isNotEmpty ? pokemon.type.first : 'normal';
-    final typeColor = _getTypeColor(primaryType);
+    final typeColor = PokemonTypeColors.getTypeColor(primaryType);
 
     return GestureDetector(
       onTap: onTap,
@@ -76,29 +34,32 @@ class PokemonCard extends StatelessWidget {
               flex: 5,
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Image.network(
-                  pokemon.img,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(
-                      Icons.catching_pokemon,
-                      size: 48,
-                      color: Colors.grey,
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                        valueColor: AlwaysStoppedAnimation<Color>(typeColor),
-                        strokeWidth: 2,
-                      ),
-                    );
-                  },
+                child: Hero(
+                  tag: 'pokemon-${pokemon.id}',
+                  child: Image.network(
+                    pokemon.img,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.catching_pokemon,
+                        size: 48,
+                        color: Colors.grey,
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                          valueColor: AlwaysStoppedAnimation<Color>(typeColor),
+                          strokeWidth: 2,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -141,7 +102,7 @@ class PokemonCard extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: _getTypeColor(type),
+                              color: PokemonTypeColors.getTypeColor(type),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
