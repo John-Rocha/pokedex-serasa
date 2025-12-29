@@ -1,0 +1,30 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "pokedex-serasa",
+                    "appId": "1:660495446:android:d723e0ad5ed58b36bb2ff7",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "pokedex-serasa",
+                    "appId": "1:660495446:ios:75b5d5be8a932ac0bb2ff7",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "pokedex-serasa",
+                    "configurations": {
+                        "android": "1:660495446:android:d723e0ad5ed58b36bb2ff7",
+                        "ios": "1:660495446:ios:75b5d5be8a932ac0bb2ff7"
+                    }
+                }
+            }
+        }
+    }
+}

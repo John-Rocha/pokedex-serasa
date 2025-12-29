@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "660495446",
+    "project_id": "pokedex-serasa",
+    "storage_bucket": "pokedex-serasa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660495446:android:d723e0ad5ed58b36bb2ff7",
+        "android_client_info": {
+          "package_name": "com.serasa.pokedex.pokedex_serasa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIW5YqrFMfRAa8m8RvzWa4WshQ7G_el84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
