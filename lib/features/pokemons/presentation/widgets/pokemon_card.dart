@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex_serasa/core/utils/pokemon_type_colors.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
@@ -36,29 +37,34 @@ class PokemonCard extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: Hero(
                   tag: 'pokemon-${pokemon.id}',
-                  child: Image.network(
-                    pokemon.img,
+                  child: CachedNetworkImage(
+                    imageUrl: pokemon.img,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.catching_pokemon,
-                        size: 48,
-                        color: Colors.grey,
-                      );
-                    },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
+                    fadeInDuration: const Duration(milliseconds: 300),
+                    fadeOutDuration: const Duration(milliseconds: 100),
+                    placeholder: (context, url) => Container(
+                      decoration: BoxDecoration(
+                        color: typeColor.withAlpha(13),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
                         child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
                           valueColor: AlwaysStoppedAnimation<Color>(typeColor),
                           strokeWidth: 2,
                         ),
-                      );
-                    },
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withAlpha(25),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.catching_pokemon,
+                        size: 48,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                 ),
               ),
