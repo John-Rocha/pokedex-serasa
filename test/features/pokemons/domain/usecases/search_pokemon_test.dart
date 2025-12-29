@@ -69,7 +69,13 @@ void main() {
     test('should return empty list when query is empty', () async {
       final result = await usecase('');
 
-      expect(result, const Right([]));
+      expect(result, isA<Right<Failure, List<Pokemon>>>());
+      result.fold(
+        (failure) => fail('Should not return failure'),
+        (pokemons) {
+          expect(pokemons, isEmpty);
+        },
+      );
       verifyNever(() => mockRepository.getPokemons());
     });
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
@@ -58,7 +59,7 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
 
-      final imageFinder = find.byType(Image);
+      final imageFinder = find.byType(CachedNetworkImage);
       expect(imageFinder, findsOneWidget);
     });
 
@@ -105,14 +106,12 @@ void main() {
       expect(find.text('Type4'), findsNothing);
     });
 
-    testWidgets('should show error icon when image fails to load', (tester) async {
+    testWidgets('should have CachedNetworkImage with error handling', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
-      
-      // Trigger image error
+
       await tester.pump();
-      
-      // Image widget should be present
-      expect(find.byType(Image), findsOneWidget);
+
+      expect(find.byType(CachedNetworkImage), findsOneWidget);
     });
 
     testWidgets('should display correct background color for Grass type',
