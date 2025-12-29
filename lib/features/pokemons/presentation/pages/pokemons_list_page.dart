@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex_serasa/core/enums/sort_order.dart';
 import 'package:pokedex_serasa/core/utils/pokemon_types_helper.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_filter_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_search_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/presentation/mixins/analytics_mixin.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_cubit.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_state.dart';
@@ -23,9 +26,15 @@ class PokemonsListPage extends StatefulWidget {
   State<PokemonsListPage> createState() => _PokemonsListPageState();
 }
 
-class _PokemonsListPageState extends State<PokemonsListPage> {
+class _PokemonsListPageState extends State<PokemonsListPage>
+    with AnalyticsMixin {
+  @override
+  String get screenName => 'Pokemon List';
+
   final PokemonsListCubit _listCubit = Modular.get<PokemonsListCubit>();
   final PokemonSearchCubit _searchCubit = Modular.get<PokemonSearchCubit>();
+  final LogSearchUseCase _logSearchUseCase = Modular.get<LogSearchUseCase>();
+  final LogFilterUseCase _logFilterUseCase = Modular.get<LogFilterUseCase>();
   final ScrollController _scrollController = ScrollController();
   bool _isSearching = false;
   bool _showFiltersBar = true;
@@ -70,6 +79,19 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
       _searchCubit.clear();
     } else {
       _searchCubit.search(query);
+      _searchCubit.stream.first.then((state) {
+        if (state is PokemonSearchSuccess) {
+          _logSearchUseCase(
+            searchTerm: query,
+            resultsCount: state.pokemons.length,
+          );
+        } else if (state is PokemonSearchEmpty) {
+          _logSearchUseCase(
+            searchTerm: query,
+            resultsCount: 0,
+          );
+        }
+      });
     }
   }
 
@@ -116,6 +138,11 @@ class _PokemonsListPageState extends State<PokemonsListPage> {
           } else {
             _listCubit.applyFilters(sortOrder, typeFilter);
           }
+
+          _logFilterUseCase(
+            types: typeFilter != null ? [typeFilter] : [],
+            sortBy: sortOrder.name != 'none' ? sortOrder.name : null,
+          );
         },
       ),
     );

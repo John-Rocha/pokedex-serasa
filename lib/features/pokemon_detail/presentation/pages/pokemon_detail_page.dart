@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_serasa/core/utils/pokemon_type_colors.dart';
 import 'package:pokedex_serasa/core/widgets/type_badge.dart';
+import 'package:pokedex_serasa/features/analytics/presentation/mixins/analytics_mixin.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_evolution_chain.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_info_section.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_header_widget.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_wikeness_widget.dart';
 
-class PokemonDetailPage extends StatelessWidget {
+class PokemonDetailPage extends StatefulWidget {
   final Pokemon pokemon;
   final List<Pokemon>? allPokemons;
 
@@ -18,8 +19,18 @@ class PokemonDetailPage extends StatelessWidget {
   });
 
   @override
+  State<PokemonDetailPage> createState() => _PokemonDetailPageState();
+}
+
+class _PokemonDetailPageState extends State<PokemonDetailPage>
+    with AnalyticsMixin {
+  @override
+  String get screenName => 'Pokemon Detail';
+
+  @override
   Widget build(BuildContext context) {
-    final primaryType = pokemon.type.isNotEmpty ? pokemon.type.first : 'normal';
+    final primaryType =
+        widget.pokemon.type.isNotEmpty ? widget.pokemon.type.first : 'normal';
     final typeColor = PokemonTypeColors.getTypeColor(primaryType);
 
     return Scaffold(
@@ -28,14 +39,14 @@ class PokemonDetailPage extends StatelessWidget {
           PokemonHeaderWidget(
             isHomePage: false,
             foregroundColor: typeColor,
-            pokemon: pokemon,
+            pokemon: widget.pokemon,
           ),
           SliverToBoxAdapter(
             child: Center(
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: pokemon.type
+                children: widget.pokemon.type
                     .map(
                       (type) => TypeBadge(
                         type: type,
@@ -54,13 +65,13 @@ class PokemonDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 24,
                 children: [
-                  PokemonWikenessWidget(pokemon: pokemon),
-                  PokemonInfoSection(pokemon: pokemon),
-                  if (pokemon.prevEvolution != null ||
-                      pokemon.nextEvolution != null)
+                  PokemonWikenessWidget(pokemon: widget.pokemon),
+                  PokemonInfoSection(pokemon: widget.pokemon),
+                  if (widget.pokemon.prevEvolution != null ||
+                      widget.pokemon.nextEvolution != null)
                     PokemonEvolutionChain(
-                      pokemon: pokemon,
-                      allPokemons: allPokemons,
+                      pokemon: widget.pokemon,
+                      allPokemons: widget.allPokemons,
                     ),
                 ],
               ),
