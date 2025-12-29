@@ -79,7 +79,6 @@ class PokemonSearchCubit extends Cubit<PokemonSearchState> {
   List<Pokemon> _applyFilters(List<Pokemon> pokemons) {
     var result = List<Pokemon>.from(pokemons);
 
-    // Filtro por tipo
     if (_currentTypeFilter != null && _currentTypeFilter!.isNotEmpty) {
       result = result.where((pokemon) {
         return pokemon.type.any(
@@ -88,7 +87,6 @@ class PokemonSearchCubit extends Cubit<PokemonSearchState> {
       }).toList();
     }
 
-    // Ordenação
     result = _sortPokemons(result, _currentSortOrder);
 
     return result;
@@ -108,7 +106,6 @@ class PokemonSearchCubit extends Cubit<PokemonSearchState> {
         pokemonsCopy.sort((a, b) => b.id.compareTo(a.id));
         break;
       case SortOrder.none:
-        // Mantém ordem original
         break;
     }
 
