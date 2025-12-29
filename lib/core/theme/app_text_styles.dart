@@ -4,39 +4,45 @@ import 'package:pokedex_serasa/core/theme/app_colors.dart';
 abstract class AppTextStyles {
   static const String fontFamily = 'Roboto';
 
+  static const TextStyle bodySmallRegular = TextStyle(
+    fontSize: 14,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+    letterSpacing: 0.28,
+  );
+
+  static const TextStyle displaySmall = TextStyle(
+    fontSize: 16,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w400,
+    color: AppColors.black,
+    letterSpacing: 0.32,
+  );
+
   static const TextStyle displayMedium = TextStyle(
     fontSize: 32,
     fontFamily: fontFamily,
     fontWeight: FontWeight.w400,
     color: AppColors.black,
-    height: 1.2,
-  );
-  static const TextStyle headline1 = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w400,
-    color: AppColors.black,
-    height: 1.2,
   );
 
-  static const TextStyle subtitle1 = TextStyle(
+  static const TextStyle subtitle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppColors.greyText,
-    height: 1.5,
   );
 
   static const TextStyle pokemonCounter = TextStyle(
     fontSize: 40,
     fontWeight: FontWeight.w400,
     color: AppColors.primaryRed,
-    height: 1.2,
   );
 
   static const TextStyle pokemonCounterLabel = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.normal,
     color: AppColors.primaryRed,
-    height: 1.2,
   );
 
   static const TextStyle appBarTitle = TextStyle(
