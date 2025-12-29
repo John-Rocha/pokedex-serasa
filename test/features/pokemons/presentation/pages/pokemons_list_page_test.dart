@@ -150,7 +150,7 @@ void main() {
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
 
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(find.byType(PokemonCard), findsNWidgets(2));
       expect(find.text('Bulbasaur'), findsOneWidget);
