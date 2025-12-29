@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_pokemon_view_usecase.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_card.dart';
 
@@ -30,6 +31,14 @@ class PokemonGridWidget extends StatelessWidget {
             return PokemonCard(
               pokemon: pokemon,
               onTap: () {
+                final logPokemonViewUseCase =
+                    Modular.get<LogPokemonViewUseCase>();
+                logPokemonViewUseCase(
+                  pokemonId: pokemon.id,
+                  pokemonName: pokemon.name,
+                  types: pokemon.type,
+                );
+
                 Modular.to.pushNamed(
                   '/pokemon-detail/',
                   arguments: {

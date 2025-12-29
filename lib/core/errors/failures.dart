@@ -20,3 +20,15 @@ class FileFailure extends Failure {
 class UnexpectedFailure extends Failure {
   const UnexpectedFailure({required super.message});
 }
+
+class AnalyticsFailure extends Failure {
+  const AnalyticsFailure({required super.message});
+}
+
+class AnalyticsChannelFailure extends Failure {
+  const AnalyticsChannelFailure({required super.message});
+}
+
+class AnalyticsInvalidParametersFailure extends Failure {
+  const AnalyticsInvalidParametersFailure({required super.message});
+}

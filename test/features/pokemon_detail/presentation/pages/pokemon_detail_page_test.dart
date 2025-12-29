@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedex_serasa/core/widgets/type_badge.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/pages/pokemon_detail_page.dart';
@@ -7,6 +8,8 @@ import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/poke
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_wikeness_widget.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_header_widget.dart';
+
+import '../../../../helpers/test_module.dart';
 
 void main() {
   group('PokemonDetailPage Widget Tests', () {
@@ -90,10 +93,13 @@ void main() {
       required Pokemon pokemon,
       List<Pokemon>? allPokemons,
     }) {
-      return MaterialApp(
-        home: PokemonDetailPage(
-          pokemon: pokemon,
-          allPokemons: allPokemons,
+      return ModularApp(
+        module: TestModule(),
+        child: MaterialApp(
+          home: PokemonDetailPage(
+            pokemon: pokemon,
+            allPokemons: allPokemons,
+          ),
         ),
       );
     }
@@ -164,29 +170,33 @@ void main() {
       expect(find.byType(PokemonInfoSection), findsOneWidget);
     });
 
-    testWidgets('should display PokemonEvolutionChain when pokemon has evolutions',
-        (tester) async {
-      await tester.pumpWidget(
-        createWidgetUnderTest(
-          pokemon: tPokemonWithEvolutions,
-          allPokemons: tAllPokemons,
-        ),
-      );
+    testWidgets(
+      'should display PokemonEvolutionChain when pokemon has evolutions',
+      (tester) async {
+        await tester.pumpWidget(
+          createWidgetUnderTest(
+            pokemon: tPokemonWithEvolutions,
+            allPokemons: tAllPokemons,
+          ),
+        );
 
-      expect(find.byType(PokemonEvolutionChain), findsOneWidget);
-    });
+        expect(find.byType(PokemonEvolutionChain), findsOneWidget);
+      },
+    );
 
-    testWidgets('should not display PokemonEvolutionChain when pokemon has no evolutions',
-        (tester) async {
-      await tester.pumpWidget(
-        createWidgetUnderTest(
-          pokemon: tPokemonWithoutEvolutions,
-          allPokemons: tAllPokemons,
-        ),
-      );
+    testWidgets(
+      'should not display PokemonEvolutionChain when pokemon has no evolutions',
+      (tester) async {
+        await tester.pumpWidget(
+          createWidgetUnderTest(
+            pokemon: tPokemonWithoutEvolutions,
+            allPokemons: tAllPokemons,
+          ),
+        );
 
-      expect(find.byType(PokemonEvolutionChain), findsNothing);
-    });
+        expect(find.byType(PokemonEvolutionChain), findsNothing);
+      },
+    );
 
     testWidgets('should display all main sections', (tester) async {
       await tester.pumpWidget(
@@ -217,10 +227,12 @@ void main() {
       await tester.pump();
 
       final wrap = tester.widget<Wrap>(
-        find.descendant(
-          of: find.byType(SliverToBoxAdapter),
-          matching: find.byType(Wrap),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(SliverToBoxAdapter),
+              matching: find.byType(Wrap),
+            )
+            .first,
       );
 
       expect(wrap.spacing, 8);

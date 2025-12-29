@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pokedex_serasa/features/analytics/presentation/mixins/analytics_mixin.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -11,7 +12,10 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with AnalyticsMixin {
+  @override
+  String get screenName => 'Splash';
+
   @override
   void initState() {
     super.initState();
