@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_serasa/core/theme/app_colors.dart';
 
 class PokemonSearchField extends StatefulWidget {
-  final Function(String) onSearch;
+  final Function(String value)? onSearch;
   final VoidCallback? onClear;
 
   const PokemonSearchField({
-    required this.onSearch,
+    this.onSearch,
     this.onClear,
     super.key,
   });
@@ -39,13 +39,13 @@ class _PokemonSearchFieldState extends State<PokemonSearchField> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      widget.onSearch(query);
+      widget.onSearch?.call(query);
     });
   }
 
   void _clearSearch() {
     _controller.clear();
-    widget.onSearch('');
+    widget.onSearch?.call('');
     widget.onClear?.call();
   }
 
