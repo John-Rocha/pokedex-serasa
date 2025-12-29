@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pokedex_serasa/features/analytics/domain/repositories/analytics_repository.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_event_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_filter_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_pokemon_view_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_screen_view_usecase.dart';
+import 'package:pokedex_serasa/features/analytics/domain/usecases/log_search_usecase.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_cubit.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/cubits/pokemon_search/pokemon_search_state.dart';
@@ -21,6 +27,8 @@ class MockPokemonsListCubit extends Mock implements PokemonsListCubit {}
 
 class MockPokemonSearchCubit extends Mock implements PokemonSearchCubit {}
 
+class MockAnalyticsRepository extends Mock implements AnalyticsRepository {}
+
 class MockModule extends Module {
   final PokemonsListCubit listCubit;
   final PokemonSearchCubit searchCubit;
@@ -34,6 +42,44 @@ class MockModule extends Module {
   void binds(i) {
     i.addInstance<PokemonsListCubit>(listCubit);
     i.addInstance<PokemonSearchCubit>(searchCubit);
+
+    final mockRepository = MockAnalyticsRepository();
+
+    when(
+      () => mockRepository.logScreenView(
+        any(),
+        any(),
+      ),
+    ).thenAnswer((_) async => Future.value());
+
+    when(
+      () => mockRepository.logPokemonView(
+        any(),
+        any(),
+        types: any(named: 'types'),
+      ),
+    ).thenAnswer((_) async => Future.value());
+
+    when(
+      () => mockRepository.logSearch(
+        any(),
+        resultsCount: any(named: 'resultsCount'),
+      ),
+    ).thenAnswer((_) async => Future.value());
+
+    when(
+      () => mockRepository.logFilterApplied(
+        any(),
+        sortBy: any(named: 'sortBy'),
+      ),
+    ).thenAnswer((_) async => Future.value());
+
+    i.addSingleton<AnalyticsRepository>(() => mockRepository);
+    i.addSingleton(() => LogEventUseCase(repository: i.get()));
+    i.addSingleton(() => LogFilterUseCase(repository: i.get()));
+    i.addSingleton(() => LogPokemonViewUseCase(repository: i.get()));
+    i.addSingleton(() => LogScreenViewUseCase(repository: i.get()));
+    i.addSingleton(() => LogSearchUseCase(repository: i.get()));
   }
 }
 
@@ -248,10 +294,12 @@ void main() {
       when(() => mockListCubit.close()).thenAnswer((_) async {});
       when(
         () => mockSearchCubit.state,
-      ).thenReturn(const PokemonSearchEmpty(query: 'Charizard'));
-      when(
-        () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenReturn(const PokemonSearchInitial());
+      when(() => mockSearchCubit.stream).thenAnswer(
+        (_) => Stream.value(
+          const PokemonSearchEmpty(query: 'Charizard'),
+        ),
+      );
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -264,6 +312,11 @@ void main() {
         'Charizard',
       );
       await tester.pump(const Duration(milliseconds: 500));
+
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchEmpty(query: 'Charizard'));
+
       await tester.pump();
 
       expect(find.byType(EmptySearchWidget), findsOneWidget);
@@ -320,10 +373,10 @@ void main() {
       when(() => mockListCubit.close()).thenAnswer((_) async {});
       when(
         () => mockSearchCubit.state,
-      ).thenReturn(const PokemonSearchLoading());
+      ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer((_) => Stream.value(const PokemonSearchLoading()));
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -332,6 +385,11 @@ void main() {
 
       await tester.enterText(find.byType(TextField), 'Bulbasaur');
       await tester.pump(const Duration(milliseconds: 500));
+
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchLoading());
+
       await tester.pump();
 
       expect(find.byType(LoadingWidget), findsOneWidget);
@@ -347,10 +405,12 @@ void main() {
       when(() => mockListCubit.close()).thenAnswer((_) async {});
       when(
         () => mockSearchCubit.state,
-      ).thenReturn(const PokemonSearchError(message: errorMessage));
+      ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer(
+        (_) => Stream.value(const PokemonSearchError(message: errorMessage)),
+      );
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -359,6 +419,11 @@ void main() {
 
       await tester.enterText(find.byType(TextField), 'xyz');
       await tester.pump(const Duration(milliseconds: 500));
+
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchError(message: errorMessage));
+
       await tester.pump();
 
       expect(find.byType(ErrorDisplayWidget), findsOneWidget);
@@ -375,7 +440,7 @@ void main() {
       ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer((_) => Stream.value(const PokemonSearchInitial()));
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -481,10 +546,12 @@ void main() {
       when(() => mockListCubit.close()).thenAnswer((_) async {});
       when(
         () => mockSearchCubit.state,
-      ).thenReturn(PokemonSearchSuccess(pokemons: [tPokemons[0]]));
+      ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer(
+        (_) => Stream.value(PokemonSearchSuccess(pokemons: [tPokemons[0]])),
+      );
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -493,6 +560,11 @@ void main() {
 
       await tester.enterText(find.byType(TextField), 'Bulbasaur');
       await tester.pump(const Duration(milliseconds: 500));
+
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(PokemonSearchSuccess(pokemons: [tPokemons[0]]));
+
       await tester.pump();
 
       expect(find.byType(QuickFiltersBar), findsOneWidget);
@@ -527,10 +599,12 @@ void main() {
       when(() => mockListCubit.close()).thenAnswer((_) async {});
       when(
         () => mockSearchCubit.state,
-      ).thenReturn(const PokemonSearchSuccess(pokemons: tPokemons));
+      ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer(
+        (_) => Stream.value(const PokemonSearchSuccess(pokemons: tPokemons)),
+      );
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -539,6 +613,11 @@ void main() {
 
       await tester.enterText(find.byType(TextField), 'Bulba');
       await tester.pump(const Duration(milliseconds: 500));
+
+      when(
+        () => mockSearchCubit.state,
+      ).thenReturn(const PokemonSearchSuccess(pokemons: tPokemons));
+
       await tester.pump();
 
       expect(find.byType(PokemonCard), findsNWidgets(2));
@@ -678,7 +757,7 @@ void main() {
       ).thenReturn(const PokemonSearchInitial());
       when(
         () => mockSearchCubit.stream,
-      ).thenAnswer((_) => const Stream.empty());
+      ).thenAnswer((_) => Stream.value(const PokemonSearchInitial()));
       when(() => mockSearchCubit.close()).thenAnswer((_) async {});
       when(() => mockSearchCubit.search(any())).thenAnswer((_) async {});
 
@@ -691,7 +770,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
 
       when(() => mockSearchCubit.state).thenReturn(
-        PokemonSearchSuccess(pokemons: [tPokemons[0]]),
+        const PokemonSearchInitial(),
       );
       await tester.pump();
 
