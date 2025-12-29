@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex_serasa/core/network/dio_client.dart';
+import 'package:pokedex_serasa/features/analytics/analytics_module.dart';
 import 'package:pokedex_serasa/features/pokemons/data/datasources/pokemons_local_datasource.dart';
 import 'package:pokedex_serasa/features/pokemons/data/datasources/pokemons_local_datasource_impl.dart';
 import 'package:pokedex_serasa/features/pokemons/data/datasources/pokemons_remote_datasource.dart';
@@ -18,6 +19,8 @@ import 'package:pokedex_serasa/features/pokemon_detail/presentation/pages/pokemo
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
 class AppModule extends Module {
+  @override
+  List<Module> get imports => [AnalyticsModule()];
   @override
   void binds(i) {
     i.addLazySingleton<Dio>(
