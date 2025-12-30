@@ -95,16 +95,21 @@ class _AdvancedFiltersBottomSheetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: OutlinedButton(
-                    onPressed: _clearFilters,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.primaryRed,
-                      side: const BorderSide(color: AppColors.primaryRed),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  child: Semantics(
+                    button: true,
+                    label: 'Limpar todos os filtros',
+                    hint: 'Toque duas vezes para remover todos os filtros aplicados',
+                    child: OutlinedButton(
+                      onPressed: _clearFilters,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.primaryRed,
+                        side: const BorderSide(color: AppColors.primaryRed),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
+                      child: const Text('Limpar'),
                     ),
-                    child: const Text('Limpar'),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -227,23 +232,28 @@ class _AdvancedFiltersBottomSheetState
                 ),
                 const SizedBox(height: 24),
 
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _applyFilters,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryRed,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                Semantics(
+                  button: true,
+                  label: 'Aplicar filtros selecionados',
+                  hint: 'Toque duas vezes para aplicar os filtros e fechar',
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _applyFilters,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryRed,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Aplicar Filtros',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                      child: const Text(
+                        'Aplicar Filtros',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

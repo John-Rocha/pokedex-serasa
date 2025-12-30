@@ -9,7 +9,9 @@ Este projeto foi desenvolvido com foco em demonstrar expertise em:
 - Gerenciamento de estado com Cubit/BLoC
 - Injeção de dependência com Flutter Modular
 - Integração nativa (MethodChannel) com Firebase Analytics
-- Testes unitários, de widget e de integração
+- Acessibilidade completa (WCAG) com suporte a leitores de tela
+- Visualização de dados com gráficos interativos
+- Testes unitários, de widget e de integração (415 testes)
 - Código limpo e manutenível
 
 ## ✨ Funcionalidades
@@ -18,7 +20,9 @@ Este projeto foi desenvolvido com foco em demonstrar expertise em:
 - **Busca Inteligente**: Busque pokémons por nome com feedback em tempo real
 - **Filtros Avançados**: Filtre por tipo e ordene alfabeticamente ou por número
 - **Detalhes Completos**: Veja informações detalhadas de cada pokémon
+- **Visualização de Estatísticas**: Gráficos interativos com spawn chance, média de spawns e multiplicadores
 - **Cadeia de Evolução**: Visualize e navegue pela cadeia evolutiva dos pokémons
+- **Acessibilidade Completa**: Suporte total a leitores de tela (VoiceOver/TalkBack) com labels semânticos
 - **Analytics Nativo**: Tracking completo de eventos via Firebase Analytics
 - **Tratamento de Erros**: Feedback claro para o usuário em caso de falhas
 
@@ -289,6 +293,7 @@ lib/
 │   │   │   └── widgets/
 │   │   │       ├── pokemon_evolution_chain.dart
 │   │   │       ├── pokemon_info_section.dart
+│   │   │       ├── pokemon_stats_chart.dart
 │   │   │       └── pokemon_wikeness_widget.dart
 │   │
 │   └── splash/                      # Feature de splash
@@ -339,8 +344,10 @@ test/
 │   │           └── pokemon_card_test.dart
 │   └── pokemon_detail/
 │       └── presentation/
-│           └── pages/
-│               └── pokemon_detail_page_test.dart
+│           ├── pages/
+│           │   └── pokemon_detail_page_test.dart
+│           └── widgets/
+│               └── pokemon_stats_chart_test.dart
 └── helpers/
     └── test_module.dart
 ```
@@ -396,6 +403,22 @@ Renderização de SVG. Escolhido por:
 - Imagens escaláveis sem perda de qualidade
 - Menor tamanho de bundle que PNG
 - Suporte a cores dinâmicas
+
+#### **fl_chart** (^1.1.1)
+Biblioteca de gráficos para Flutter. Escolhido por:
+- Gráficos customizáveis e responsivos
+- Performance otimizada para mobile
+- Ampla variedade de tipos de gráficos (linha, pizza, barras)
+- Documentação completa e comunidade ativa
+- Suporte a animações fluidas
+- Fácil integração com widgets Flutter nativos
+
+#### **cached_network_image** (^3.4.1)
+Cache de imagens de rede. Escolhido por:
+- Cache automático de imagens da API
+- Placeholder e error widgets customizáveis
+- Melhora significativa de performance
+- Reduz consumo de dados do usuário
 
 ### Dev Dependencies
 
@@ -490,9 +513,183 @@ class AnalyticsMethodChannel(
 }
 ```
 
+## ♿ Acessibilidade
+
+O aplicativo foi desenvolvido com **acessibilidade em primeiro lugar**, seguindo as diretrizes WCAG e garantindo uma experiência inclusiva para todos os usuários.
+
+### Recursos de Acessibilidade Implementados
+
+#### 1. **Suporte Completo a Leitores de Tela**
+- **VoiceOver** (iOS) e **TalkBack** (Android) totalmente compatíveis
+- Labels semânticos descritivos em todos os componentes interativos
+- Hints contextuais para ações disponíveis
+
+#### 2. **Widgets com Semantics**
+
+Todos os widgets principais foram implementados com `Semantics` para garantir navegação acessível:
+
+**PokemonCard**
+```dart
+Semantics(
+  button: true,
+  enabled: onTap != null,
+  label: 'Pokémon ${pokemon.name}, número ${pokemon.num}, tipos: $typesText',
+  hint: 'Toque duas vezes para ver detalhes',
+  child: GestureDetector(/* ... */),
+)
+```
+
+**PokemonSearchField**
+```dart
+Semantics(
+  textField: true,
+  label: 'Campo de busca de pokémons',
+  hint: 'Digite o nome ou número do pokémon',
+  child: TextField(/* ... */),
+)
+```
+
+**FilterChipWidget**
+```dart
+Semantics(
+  button: true,
+  enabled: true,
+  selected: isActive,
+  label: isActive
+    ? 'Filtro $label ativo. Toque duas vezes para desativar'
+    : 'Filtro $label. Toque duas vezes para ativar',
+  child: GestureDetector(/* ... */),
+)
+```
+
+#### 3. **Navegação Semântica**
+- Headers (`Semantics(header: true)`) para títulos de seções
+- Containers (`Semantics(container: true)`) para agrupamento lógico
+- Labels consolidados para evitar leitura redundante
+- `ExcludeSemantics` em elementos puramente visuais
+
+#### 4. **Feedback Contextual**
+- Estados de carregamento anunciados
+- Mensagens de erro acessíveis
+- Feedback de ações realizadas (filtros aplicados, busca executada)
+
+#### 5. **Componentes Acessíveis**
+
+| Componente | Recursos de Acessibilidade |
+|------------|---------------------------|
+| **PokemonCard** | Label com nome/número/tipos, hint de ação |
+| **TypeBadge** | Label de tipo (ex: "Tipo fogo") |
+| **PokemonSearchField** | TextField semântico, botão de limpar com label |
+| **FilterChips** | Estado selecionado, labels dinâmicos |
+| **PokemonStatsChart** | Gráfico com label consolidado de estatísticas |
+| **PokemonEvolutionChain** | Seção de evoluções com header |
+| **PokemonInfoSection** | Informações consolidadas em label único |
+
+### Testando Acessibilidade
+
+**iOS (VoiceOver)**
+1. Abra Ajustes > Acessibilidade > VoiceOver
+2. Ative VoiceOver
+3. Navegue pelo app deslizando para direita/esquerda
+4. Toque duas vezes para ativar elementos
+
+**Android (TalkBack)**
+1. Abra Configurações > Acessibilidade > TalkBack
+2. Ative TalkBack
+3. Navegue pelo app deslizando para direita/esquerda
+4. Toque duas vezes para ativar elementos
+
+## 📊 Visualização de Estatísticas
+
+O app inclui um sistema de visualização de estatísticas dos pokémons através de gráficos de progresso interativos.
+
+### Recursos do Stats Chart
+
+#### 1. **Barras de Progresso Interativas**
+Cada estatística é representada por uma barra de progresso (`LinearProgressIndicator`) com:
+- Valores normalizados (0.0 - 1.0)
+- Cores baseadas no tipo primário do pokémon
+- Labels descritivos e valores formatados
+
+#### 2. **Estatísticas Exibidas**
+
+**Chance de Spawn**
+- Valor máximo: 10%
+- Formato: `X.XX%`
+- Indica a probabilidade de encontrar o pokémon
+
+**Média de Spawns**
+- Valor máximo: 100
+- Formato: `XX.X`
+- Número médio de aparições do pokémon
+
+**Multiplicador** (quando disponível)
+- Valor máximo: 2.0
+- Formato: `X.XX`
+- Fator de evolução do pokémon
+
+#### 3. **Implementação**
+
+```dart
+class PokemonStatsChart extends StatelessWidget {
+  List<StatData> _getStats() {
+    return [
+      StatData(
+        label: 'Chance de Spawn',
+        value: pokemon.spawnChance,
+        maxValue: 10.0,
+        displayValue: '${pokemon.spawnChance.toStringAsFixed(2)}%',
+      ),
+      StatData(
+        label: 'Média de Spawns',
+        value: pokemon.avgSpawns,
+        maxValue: 100.0,
+        displayValue: pokemon.avgSpawns.toStringAsFixed(1),
+      ),
+      if (pokemon.multipliers != null && pokemon.multipliers!.isNotEmpty)
+        StatData(
+          label: 'Multiplicador',
+          value: pokemon.multipliers!.first,
+          maxValue: 2.0,
+          displayValue: pokemon.multipliers!.first.toStringAsFixed(2),
+        ),
+    ];
+  }
+}
+```
+
+#### 4. **Design Responsivo**
+- Container arredondado com fundo cinza claro
+- Padding adequado para leitura confortável
+- Barras de progresso com cantos arredondados
+- Cores dinâmicas baseadas no tipo do pokémon
+
+#### 5. **Acessibilidade Integrada**
+O gráfico de estatísticas inclui label consolidado:
+```dart
+Semantics(
+  label: 'Gráfico de estatísticas: Chance de Spawn: 0.69%, Média de Spawns: 69.0, Multiplicador: 1.58',
+  child: ExcludeSemantics(
+    child: Container(/* gráfico visual */),
+  ),
+)
+```
+
+### Pacote Utilizado
+
+#### **fl_chart** (^1.1.1)
+Biblioteca de gráficos para Flutter. Escolhido por:
+- Gráficos customizáveis e responsivos
+- Performance otimizada para mobile
+- Ampla variedade de tipos de gráficos
+- Documentação completa e comunidade ativa
+- Suporte a animações fluidas
+
+> **Nota**: Embora o fl_chart ofereça gráficos complexos (linha, pizza, barras), optamos por usar `LinearProgressIndicator` nativo do Flutter para este caso por ser mais simples, performático e semanticamente apropriado para exibição de estatísticas normalizadas.
+
 ## 🧪 Testes
 
-O projeto possui **399 testes** com **100% de taxa de sucesso**, cobrindo:
+O projeto possui **415 testes** com **100% de taxa de sucesso**, cobrindo:
 
 ### Testes Unitários
 - **Repository**: Verifica chamadas corretas ao datasource
@@ -571,23 +768,30 @@ Para habilitar analytics em seu próprio projeto Firebase:
 - [ ] Implementar cache local com Hive/Sqflite
 - [ ] Adicionar favoritos persistentes
 - [ ] Modo offline
-- [ ] Animações de transição
-- [ ] Modo escuro
-- [ ] Internacionalização (i18n)
-- [ ] Paginação infinita
-- [ ] Filtros avançados por stats
-- [ ] Comparação entre pokémons
+- [ ] Animações de transição entre telas
+- [ ] Modo escuro (Dark Mode)
+- [ ] Internacionalização (i18n) - Suporte para múltiplos idiomas
+- [ ] Paginação infinita na listagem
+- [ ] Filtros avançados por stats (chance de spawn, multiplicador)
+- [ ] Comparação lado a lado entre pokémons
+- [ ] Gráficos de radar para visualização de stats completas
+- [ ] Som e efeitos sonoros
 
 ## 🎨 Screenshots
 
 ### Lista de Pokémons
-Interface responsiva com grid adaptativo mostrando todos os pokémons disponíveis.
+Interface responsiva com grid adaptativo mostrando todos os pokémons disponíveis. Totalmente acessível com suporte a VoiceOver e TalkBack.
 
 ### Busca e Filtros
-Sistema de busca em tempo real com filtros por tipo e ordenação.
+Sistema de busca em tempo real com filtros por tipo e ordenação. Componentes com labels semânticos para navegação assistiva.
 
 ### Detalhes do Pokémon
-Visualização completa com informações, fraquezas e cadeia evolutiva interativa.
+Visualização completa com:
+- Informações gerais (altura, peso, tipo, candy)
+- **Gráficos de estatísticas** com barras de progresso interativas
+- Fraquezas com badges coloridos
+- Cadeia evolutiva interativa
+- Suporte completo a leitores de tela em todos os componentes
 
 ## 📄 Licença
 

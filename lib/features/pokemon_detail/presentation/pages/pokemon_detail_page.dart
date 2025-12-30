@@ -5,6 +5,7 @@ import 'package:pokedex_serasa/features/analytics/presentation/mixins/analytics_
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_evolution_chain.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_info_section.dart';
+import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_stats_chart.dart';
 import 'package:pokedex_serasa/features/pokemons/presentation/widgets/pokemon_header_widget.dart';
 import 'package:pokedex_serasa/features/pokemon_detail/presentation/widgets/pokemon_wikeness_widget.dart';
 
@@ -29,8 +30,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    final primaryType =
-        widget.pokemon.type.isNotEmpty ? widget.pokemon.type.first : 'normal';
+    final primaryType = widget.pokemon.type.isNotEmpty
+        ? widget.pokemon.type.first
+        : 'normal';
     final typeColor = PokemonTypeColors.getTypeColor(primaryType);
 
     return Scaffold(
@@ -66,6 +68,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                 spacing: 24,
                 children: [
                   PokemonWikenessWidget(pokemon: widget.pokemon),
+                  PokemonStatsChart(pokemon: widget.pokemon),
                   PokemonInfoSection(pokemon: widget.pokemon),
                   if (widget.pokemon.prevEvolution != null ||
                       widget.pokemon.nextEvolution != null)

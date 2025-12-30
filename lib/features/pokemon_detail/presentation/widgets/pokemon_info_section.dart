@@ -12,44 +12,57 @@ class PokemonInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Informações',
-          style: AppTextStyles.displaySmall,
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(16),
+    return Semantics(
+      container: true,
+      label: 'Seção de informações do pokémon',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            header: true,
+            child: const Text(
+              'Informações',
+              style: AppTextStyles.displaySmall,
+            ),
           ),
-          child: Column(
-            children: [
-              _buildInfoRow('Altura', pokemon.height),
-              const Divider(height: 24),
-              _buildInfoRow('Peso', pokemon.weight),
-              const Divider(height: 24),
-              _buildInfoRow('Doce', pokemon.candy),
-              if (pokemon.candyCount != null) ...[
-                const Divider(height: 24),
-                _buildInfoRow('Doces para evoluir', '${pokemon.candyCount}'),
-              ],
-              const Divider(height: 24),
-              _buildInfoRow('Ovo', pokemon.egg),
-              const Divider(height: 24),
-              _buildInfoRow(
-                'Chance de spawn',
-                '${pokemon.spawnChance.toStringAsFixed(2)}%',
+          const SizedBox(height: 16),
+          Semantics(
+            readOnly: true,
+            label: 'Informações gerais: Altura ${pokemon.height}, Peso ${pokemon.weight}, Doce ${pokemon.candy}, ${pokemon.candyCount != null ? 'Doces para evoluir ${pokemon.candyCount}, ' : ''}Ovo ${pokemon.egg}, Chance de spawn ${pokemon.spawnChance.toStringAsFixed(2)}%, Horário de spawn ${pokemon.spawnTime}',
+            child: ExcludeSemantics(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    _buildInfoRow('Altura', pokemon.height),
+                    const Divider(height: 24),
+                    _buildInfoRow('Peso', pokemon.weight),
+                    const Divider(height: 24),
+                    _buildInfoRow('Doce', pokemon.candy),
+                    if (pokemon.candyCount != null) ...[
+                      const Divider(height: 24),
+                      _buildInfoRow('Doces para evoluir', '${pokemon.candyCount}'),
+                    ],
+                    const Divider(height: 24),
+                    _buildInfoRow('Ovo', pokemon.egg),
+                    const Divider(height: 24),
+                    _buildInfoRow(
+                      'Chance de spawn',
+                      '${pokemon.spawnChance.toStringAsFixed(2)}%',
+                    ),
+                    const Divider(height: 24),
+                    _buildInfoRow('Horário de spawn', pokemon.spawnTime),
+                  ],
+                ),
               ),
-              const Divider(height: 24),
-              _buildInfoRow('Horário de spawn', pokemon.spawnTime),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -64,53 +64,67 @@ class _PokemonSearchFieldState extends State<PokemonSearchField> {
           ),
         ],
       ),
-      child: TextField(
-        controller: _controller,
-        onChanged: _onSearchChanged,
-        decoration: InputDecoration(
-          hintText: 'Buscar Pokémon por nome ou número',
-          hintStyle: TextStyle(
-            color: Colors.grey[400],
-            fontSize: 14,
-          ),
-          prefixIcon: const Icon(
-            Icons.search,
-            color: AppColors.primaryRed,
-          ),
-          suffixIcon: _controller.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(
-                    Icons.clear,
-                    color: Colors.grey,
-                  ),
-                  onPressed: _clearSearch,
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: AppColors.primaryRed,
-              width: 2,
+      child: Semantics(
+        textField: true,
+        label: 'Campo de busca de pokémons',
+        hint: 'Digite o nome ou número do pokémon',
+        child: TextField(
+          controller: _controller,
+          onChanged: _onSearchChanged,
+          decoration: InputDecoration(
+            hintText: 'Buscar Pokémon por nome ou número',
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 14,
             ),
+            prefixIcon: Semantics(
+              label: 'Ícone de busca',
+              child: const Icon(
+                Icons.search,
+                color: AppColors.primaryRed,
+              ),
+            ),
+            suffixIcon: _controller.text.isNotEmpty
+                ? Semantics(
+                    button: true,
+                    label: 'Limpar busca',
+                    hint: 'Toque duas vezes para limpar',
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.clear,
+                        color: Colors.grey,
+                      ),
+                      onPressed: _clearSearch,
+                      tooltip: 'Limpar busca',
+                    ),
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppColors.primaryRed,
+                width: 2,
+              ),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            filled: true,
+            fillColor: Colors.white,
           ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.black87,
           ),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.black87,
         ),
       ),
     );
