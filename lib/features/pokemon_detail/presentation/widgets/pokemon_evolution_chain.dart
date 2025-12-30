@@ -24,15 +24,21 @@ class PokemonEvolutionChain extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 16,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Text(
-          'Relacionados',
-          style: AppTextStyles.displaySmall,
-        ),
+    return Semantics(
+      container: true,
+      label: 'Seção de pokémons relacionados',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Semantics(
+            header: true,
+            child: const Text(
+              'Relacionados',
+              style: AppTextStyles.displaySmall,
+            ),
+          ),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -116,6 +122,7 @@ class PokemonEvolutionChain extends StatelessWidget {
           ],
         ),
       ],
+      ),
     );
   }
 }
