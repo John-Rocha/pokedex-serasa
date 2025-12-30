@@ -16,26 +16,31 @@ class TypeBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: PokemonTypeColors.getTypeColor(type),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            _getTypeIcon(type),
-            color: Colors.white,
-            size: fontSize + 2,
+    return Semantics(
+      label: 'Tipo ${type.toLowerCase()}',
+      child: ExcludeSemantics(
+        child: Container(
+          padding: padding,
+          decoration: BoxDecoration(
+            color: PokemonTypeColors.getTypeColor(type),
+            borderRadius: BorderRadius.circular(20),
           ),
-          const SizedBox(width: 4),
-          Text(
-            type.toLowerCase(),
-            style: AppTextStyles.bodySmallRegular,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                _getTypeIcon(type),
+                color: Colors.white,
+                size: fontSize + 2,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                type.toLowerCase(),
+                style: AppTextStyles.bodySmallRegular,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
