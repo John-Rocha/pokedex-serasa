@@ -14,6 +14,18 @@ class QuickFiltersBar extends StatelessWidget {
     super.key,
   });
 
+  String _getCodeSortLabel(SortOrder sortOrder) {
+    return sortOrder == SortOrder.idDescending
+        ? 'código (decrescente)'
+        : 'código (crescente)';
+  }
+
+  SortOrder _getNextCodeSortOrder(SortOrder currentOrder) {
+    return currentOrder == SortOrder.idDescending
+        ? SortOrder.none
+        : SortOrder.idDescending;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,14 +57,10 @@ class QuickFiltersBar extends StatelessWidget {
             const SizedBox(width: 8),
 
             FilterChipWidget(
-              label: 'código (crescente)',
-              isActive: currentSortOrder == SortOrder.idAscending,
+              label: _getCodeSortLabel(currentSortOrder),
+              isActive: currentSortOrder == SortOrder.idDescending,
               onTap: () {
-                onSortOrderChanged(
-                  currentSortOrder == SortOrder.idAscending
-                      ? SortOrder.none
-                      : SortOrder.idAscending,
-                );
+                onSortOrderChanged(_getNextCodeSortOrder(currentSortOrder));
               },
             ),
           ],
