@@ -121,7 +121,7 @@ void main() {
     });
 
     testWidgets(
-        'should call onSortOrderChanged with idAscending when code chip is tapped',
+        'should call onSortOrderChanged with idDescending when code chip is tapped from none',
         (tester) async {
       SortOrder? receivedSortOrder;
 
@@ -134,24 +134,37 @@ void main() {
       );
 
       await tester.tap(find.text('código (crescente)'));
-      expect(receivedSortOrder, SortOrder.idAscending);
+      expect(receivedSortOrder, SortOrder.idDescending);
     });
 
     testWidgets(
-        'should call onSortOrderChanged with none when code chip is tapped while active',
+        'should call onSortOrderChanged with none when code chip is tapped while idDescending',
         (tester) async {
       SortOrder? receivedSortOrder;
 
       await tester.pumpWidget(
         buildWidget(
-          currentSortOrder: SortOrder.idAscending,
+          currentSortOrder: SortOrder.idDescending,
           onFiltersTap: () {},
           onSortOrderChanged: (order) => receivedSortOrder = order,
         ),
       );
 
-      await tester.tap(find.text('código (crescente)'));
+      await tester.tap(find.text('código (decrescente)'));
       expect(receivedSortOrder, SortOrder.none);
+    });
+
+    testWidgets('should display "código (decrescente)" when sort is idDescending',
+        (tester) async {
+      await tester.pumpWidget(
+        buildWidget(
+          currentSortOrder: SortOrder.idDescending,
+          onFiltersTap: () {},
+          onSortOrderChanged: (_) {},
+        ),
+      );
+
+      expect(find.text('código (decrescente)'), findsOneWidget);
     });
 
     testWidgets('should show alphabetical chip as active when sort is alphabetical',
@@ -175,11 +188,11 @@ void main() {
       expect(alphabeticalChip.isActive, true);
     });
 
-    testWidgets('should show code chip as active when sort is idAscending',
+    testWidgets('should show code chip as inactive when sort is none',
         (tester) async {
       await tester.pumpWidget(
         buildWidget(
-          currentSortOrder: SortOrder.idAscending,
+          currentSortOrder: SortOrder.none,
           onFiltersTap: () {},
           onSortOrderChanged: (_) {},
         ),
@@ -191,6 +204,27 @@ void main() {
 
       final codeChip = chips.firstWhere(
         (chip) => chip.label == 'código (crescente)',
+      );
+
+      expect(codeChip.isActive, false);
+    });
+
+    testWidgets('should show code chip as active when sort is idDescending',
+        (tester) async {
+      await tester.pumpWidget(
+        buildWidget(
+          currentSortOrder: SortOrder.idDescending,
+          onFiltersTap: () {},
+          onSortOrderChanged: (_) {},
+        ),
+      );
+
+      final chips = tester.widgetList<FilterChipWidget>(
+        find.byType(FilterChipWidget),
+      );
+
+      final codeChip = chips.firstWhere(
+        (chip) => chip.label == 'código (decrescente)',
       );
 
       expect(codeChip.isActive, true);
