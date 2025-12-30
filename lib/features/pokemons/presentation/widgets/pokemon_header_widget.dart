@@ -96,46 +96,62 @@ class PokemonHeaderWidget extends StatelessWidget {
               child: pokemon?.img != null
                   ? Hero(
                       tag: 'pokemon-${pokemon!.id}',
-                      child: CachedNetworkImage(
-                        imageUrl: pokemon!.img,
-                        width: double.infinity,
-                        height: MediaQuery.sizeOf(context).height * 0.5,
-                        fit: BoxFit.contain,
-                        fadeInDuration: const Duration(milliseconds: 500),
-                        fadeOutDuration: const Duration(milliseconds: 200),
-                        placeholder: (context, url) => Container(
-                          width: double.infinity,
-                          height: MediaQuery.sizeOf(context).height * 0.5,
-                          decoration: BoxDecoration(
-                            color: (foregroundColor ?? AppColors.primaryRed)
-                                .withAlpha(13),
-                          ),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                foregroundColor ?? AppColors.primaryRed,
+                      child: Semantics(
+                        image: true,
+                        label: 'Imagem grande do pokémon ${pokemon!.name}',
+                        child: ExcludeSemantics(
+                          child: CachedNetworkImage(
+                            imageUrl: pokemon!.img,
+                            width: double.infinity,
+                            height: MediaQuery.sizeOf(context).height * 0.5,
+                            fit: BoxFit.contain,
+                            fadeInDuration: const Duration(milliseconds: 500),
+                            fadeOutDuration: const Duration(milliseconds: 200),
+                            placeholder: (context, url) => Semantics(
+                              label: 'Carregando imagem do pokémon',
+                              child: Container(
+                                width: double.infinity,
+                                height: MediaQuery.sizeOf(context).height * 0.5,
+                                decoration: BoxDecoration(
+                                  color: (foregroundColor ?? AppColors.primaryRed)
+                                      .withAlpha(13),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      foregroundColor ?? AppColors.primaryRed,
+                                    ),
+                                    strokeWidth: 3,
+                                  ),
+                                ),
                               ),
-                              strokeWidth: 3,
                             ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Container(
-                          width: double.infinity,
-                          height: MediaQuery.sizeOf(context).height * 0.5,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withAlpha(25),
-                          ),
-                          child: const Icon(
-                            Icons.catching_pokemon,
-                            size: 100,
-                            color: Colors.grey,
+                            errorWidget: (context, url, error) => Semantics(
+                              label: 'Erro ao carregar imagem do pokémon',
+                              child: Container(
+                                width: double.infinity,
+                                height: MediaQuery.sizeOf(context).height * 0.5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withAlpha(25),
+                                ),
+                                child: const Icon(
+                                  Icons.catching_pokemon,
+                                  size: 100,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     )
-                  : Image.asset(
-                      'assets/images/koraidon.png',
-                      width: double.infinity,
+                  : Semantics(
+                      image: true,
+                      label: 'Logo da Pokédex',
+                      child: Image.asset(
+                        'assets/images/koraidon.png',
+                        width: double.infinity,
+                      ),
                     ),
             ),
             if (isHomePage) ...[
