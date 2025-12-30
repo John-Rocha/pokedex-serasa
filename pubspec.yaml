@@ -43,6 +43,7 @@ dependencies:
   cached_network_image: ^3.4.1
   firebase_core: ^4.3.0
   fl_chart: ^1.1.1
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -239,3 +240,12 @@ flutter:
         - asset: assets/fonts/Roboto_SemiCondensed-BlackItalic.ttf
           weight: 900
           style: italic
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
