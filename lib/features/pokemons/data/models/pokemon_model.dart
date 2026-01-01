@@ -4,42 +4,42 @@ import 'package:equatable/equatable.dart';
 import 'package:pokedex_serasa/features/pokemons/domain/entities/pokemon.dart';
 
 class EvolutionModel extends Equatable {
-  final String num;
+  final String pokeNum;
   final String name;
 
   const EvolutionModel({
-    required this.num,
+    required this.pokeNum,
     required this.name,
   });
 
   factory EvolutionModel.fromJson(Map<String, dynamic> json) {
     return EvolutionModel(
-      num: json['num'] as String,
+      pokeNum: json['num'] as String,
       name: json['name'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'num': num,
+      'num': pokeNum,
       'name': name,
     };
   }
 
   Evolution toEntity() {
     return Evolution(
-      pokeNum: num,
+      pokeNum: pokeNum,
       name: name,
     );
   }
 
   @override
-  List<Object?> get props => [num, name];
+  List<Object?> get props => [pokeNum, name];
 }
 
 class PokemonModel extends Equatable {
   final int id;
-  final String num;
+  final String pokeNum;
   final String name;
   final String img;
   final List<String> type;
@@ -58,7 +58,7 @@ class PokemonModel extends Equatable {
 
   const PokemonModel({
     required this.id,
-    required this.num,
+    required this.pokeNum,
     required this.name,
     required this.img,
     required this.type,
@@ -79,7 +79,7 @@ class PokemonModel extends Equatable {
   factory PokemonModel.fromJson(Map<String, dynamic> json) {
     return PokemonModel(
       id: json['id'] as int,
-      num: json['num'] as String,
+      pokeNum: json['num'] as String,
       name: json['name'] as String,
       img: json['img'] as String,
       type: (json['type'] as List<dynamic>).map((e) => e as String).toList(),
@@ -112,10 +112,32 @@ class PokemonModel extends Equatable {
     return double.parse(value.toString());
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'num': pokeNum,
+      'name': name,
+      'img': img,
+      'type': type,
+      'height': height,
+      'weight': weight,
+      'candy': candy,
+      'candy_count': candyCount,
+      'egg': egg,
+      'spawn_chance': spawnChance,
+      'avg_spawns': avgSpawns,
+      'spawn_time': spawnTime,
+      'multipliers': multipliers,
+      'weaknesses': weaknesses,
+      'next_evolution': nextEvolution?.map((e) => e.toJson()).toList(),
+      'prev_evolution': prevEvolution?.map((e) => e.toJson()).toList(),
+    };
+  }
+
   Pokemon toEntity() {
     return Pokemon(
       id: id,
-      pokeNum: num,
+      pokeNum: pokeNum,
       name: name,
       img: img,
       type: type,
@@ -137,7 +159,7 @@ class PokemonModel extends Equatable {
   @override
   List<Object?> get props => [
     id,
-    num,
+    pokeNum,
     name,
     img,
     type,
