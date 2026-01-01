@@ -7,7 +7,7 @@ void main() {
   group('PokemonInfoSection Widget Tests', () {
     const tPokemonWithCandyCount = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -24,7 +24,7 @@ void main() {
 
     const tPokemonWithoutCandyCount = Pokemon(
       id: 2,
-      num: '002',
+      pokeNum: '002',
       name: 'Ivysaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -80,8 +80,9 @@ void main() {
       expect(find.text('25'), findsOneWidget);
     });
 
-    testWidgets('should not display candy count when not available',
-        (tester) async {
+    testWidgets('should not display candy count when not available', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest(tPokemonWithoutCandyCount));
 
       expect(find.text('Doces para evoluir'), findsNothing);
@@ -94,8 +95,9 @@ void main() {
       expect(find.text('2 km'), findsOneWidget);
     });
 
-    testWidgets('should display spawn chance label and formatted value',
-        (tester) async {
+    testWidgets('should display spawn chance label and formatted value', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest(tPokemonWithCandyCount));
 
       expect(find.text('Chance de spawn'), findsOneWidget);
@@ -143,10 +145,10 @@ void main() {
       expect(find.byType(Divider), findsWidgets);
     });
 
-    testWidgets('should format spawn chance with 2 decimal places',
-        (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithoutCandyCount));
+    testWidgets('should format spawn chance with 2 decimal places', (
+      tester,
+    ) async {
+      await tester.pumpWidget(createWidgetUnderTest(tPokemonWithoutCandyCount));
 
       expect(find.text('0.04%'), findsOneWidget);
     });

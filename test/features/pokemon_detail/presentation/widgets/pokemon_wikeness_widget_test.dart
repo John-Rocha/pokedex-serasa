@@ -8,7 +8,7 @@ void main() {
   group('PokemonWikenessWidget Widget Tests', () {
     const tPokemonWithMultipleWeaknesses = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -24,7 +24,7 @@ void main() {
 
     const tPokemonWithSingleWeakness = Pokemon(
       id: 25,
-      num: '025',
+      pokeNum: '025',
       name: 'Pikachu',
       img: 'http://test.png',
       type: ['Electric'],
@@ -40,7 +40,7 @@ void main() {
 
     const tPokemonWithNoWeaknesses = Pokemon(
       id: 26,
-      num: '026',
+      pokeNum: '026',
       name: 'Raichu',
       img: 'http://test.png',
       type: ['Electric'],
@@ -63,37 +63,45 @@ void main() {
     }
 
     testWidgets('should display section title', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       expect(find.text('Fraquezas'), findsOneWidget);
     });
 
-    testWidgets('should display type badges for all weaknesses', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+    testWidgets('should display type badges for all weaknesses', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       expect(find.byType(TypeBadge), findsNWidgets(4));
     });
 
-    testWidgets('should display type badges for single weakness', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithSingleWeakness));
+    testWidgets('should display type badges for single weakness', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithSingleWeakness),
+      );
 
       expect(find.byType(TypeBadge), findsOneWidget);
     });
 
-    testWidgets('should not display type badges when no weaknesses',
-        (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithNoWeaknesses));
+    testWidgets('should not display type badges when no weaknesses', (
+      tester,
+    ) async {
+      await tester.pumpWidget(createWidgetUnderTest(tPokemonWithNoWeaknesses));
 
       expect(find.byType(TypeBadge), findsNothing);
     });
 
     testWidgets('should display correct weakness types', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       expect(find.text('fire'), findsOneWidget);
       expect(find.text('ice'), findsOneWidget);
@@ -102,8 +110,9 @@ void main() {
     });
 
     testWidgets('should use horizontal scroll view', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       expect(find.byType(SingleChildScrollView), findsOneWidget);
 
@@ -114,8 +123,9 @@ void main() {
     });
 
     testWidgets('should have padding between badges', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       final paddingWidgets = find.descendant(
         of: find.byType(SingleChildScrollView),
@@ -126,14 +136,17 @@ void main() {
     });
 
     testWidgets('should have Column as main container', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       final column = tester.widget<Column>(
-        find.descendant(
-          of: find.byType(PokemonWikenessWidget),
-          matching: find.byType(Column),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(PokemonWikenessWidget),
+              matching: find.byType(Column),
+            )
+            .first,
       );
 
       expect(column.crossAxisAlignment, CrossAxisAlignment.start);
@@ -141,8 +154,9 @@ void main() {
     });
 
     testWidgets('should contain Row inside ScrollView', (tester) async {
-      await tester
-          .pumpWidget(createWidgetUnderTest(tPokemonWithMultipleWeaknesses));
+      await tester.pumpWidget(
+        createWidgetUnderTest(tPokemonWithMultipleWeaknesses),
+      );
 
       expect(
         find.descendant(

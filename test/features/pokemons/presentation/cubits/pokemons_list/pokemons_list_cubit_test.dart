@@ -27,7 +27,7 @@ void main() {
   const tPokemons = [
     Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -50,7 +50,9 @@ void main() {
     blocTest<PokemonsListCubit, PokemonsListState>(
       'should emit [Loading, Success] when data is gotten successfully',
       build: () {
-        when(() => mockGetPokemons()).thenAnswer((_) async => const Right(tPokemons));
+        when(
+          () => mockGetPokemons(),
+        ).thenAnswer((_) async => const Right(tPokemons));
         return cubit;
       },
       act: (cubit) => cubit.loadPokemons(),
@@ -59,7 +61,11 @@ void main() {
         isA<PokemonsListSuccess>()
             .having((state) => state.pokemons, 'pokemons', tPokemons)
             .having((state) => state.pokemons.length, 'pokemons length', 1)
-            .having((state) => state.pokemons[0].name, 'first pokemon name', 'Bulbasaur'),
+            .having(
+              (state) => state.pokemons[0].name,
+              'first pokemon name',
+              'Bulbasaur',
+            ),
       ],
       verify: (_) {
         verify(() => mockGetPokemons()).called(1);
@@ -111,7 +117,8 @@ void main() {
       'should emit [Loading, Error] when getting data fails with UnexpectedFailure',
       build: () {
         when(() => mockGetPokemons()).thenAnswer(
-          (_) async => const Left(UnexpectedFailure(message: 'Unexpected error')),
+          (_) async =>
+              const Left(UnexpectedFailure(message: 'Unexpected error')),
         );
         return cubit;
       },
@@ -147,7 +154,7 @@ void main() {
       const tMultiplePokemons = [
         Pokemon(
           id: 3,
-          num: '003',
+          pokeNum: '003',
           name: 'Venusaur',
           img: 'http://test.png',
           type: ['Grass', 'Poison'],
@@ -162,7 +169,7 @@ void main() {
         ),
         Pokemon(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass', 'Poison'],
@@ -177,7 +184,7 @@ void main() {
         ),
         Pokemon(
           id: 2,
-          num: '002',
+          pokeNum: '002',
           name: 'Ivysaur',
           img: 'http://test.png',
           type: ['Grass', 'Poison'],
@@ -256,7 +263,7 @@ void main() {
       const tMixedTypePokemons = [
         Pokemon(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass', 'Poison'],
@@ -271,7 +278,7 @@ void main() {
         ),
         Pokemon(
           id: 4,
-          num: '004',
+          pokeNum: '004',
           name: 'Charmander',
           img: 'http://test.png',
           type: ['Fire'],
@@ -286,7 +293,7 @@ void main() {
         ),
         Pokemon(
           id: 7,
-          num: '007',
+          pokeNum: '007',
           name: 'Squirtle',
           img: 'http://test.png',
           type: ['Water'],
@@ -379,7 +386,7 @@ void main() {
       const tFilteredPokemons = [
         Pokemon(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -397,7 +404,7 @@ void main() {
       const tAllPokemons = [
         Pokemon(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -412,7 +419,7 @@ void main() {
         ),
         Pokemon(
           id: 4,
-          num: '004',
+          pokeNum: '004',
           name: 'Charmander',
           img: 'http://test.png',
           type: ['Fire'],

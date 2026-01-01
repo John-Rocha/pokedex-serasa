@@ -7,7 +7,7 @@ void main() {
   group('PokemonStatsChart Widget Tests', () {
     const tPokemon = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -25,7 +25,7 @@ void main() {
 
     const tPokemonWithoutMultipliers = Pokemon(
       id: 25,
-      num: '025',
+      pokeNum: '025',
       name: 'Pikachu',
       img: 'http://test.png',
       type: ['Electric'],
@@ -74,8 +74,9 @@ void main() {
       expect(find.text('1.58'), findsOneWidget);
     });
 
-    testWidgets('should not display multiplier when not available',
-        (tester) async {
+    testWidgets('should not display multiplier when not available', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(tPokemonWithoutMultipliers),
       );
@@ -83,21 +84,22 @@ void main() {
       expect(find.text('Multiplicador'), findsNothing);
     });
 
-    testWidgets('should display LinearProgressIndicator for each stat',
-        (tester) async {
+    testWidgets('should display LinearProgressIndicator for each stat', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest(tPokemon));
 
       final progressIndicators = find.byType(LinearProgressIndicator);
       expect(progressIndicators, findsNWidgets(3));
     });
 
-    testWidgets('should display progress indicators with correct values',
-        (tester) async {
+    testWidgets('should display progress indicators with correct values', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest(tPokemon));
       await tester.pump();
 
-      final progressIndicators =
-          tester.widgetList<LinearProgressIndicator>(
+      final progressIndicators = tester.widgetList<LinearProgressIndicator>(
         find.byType(LinearProgressIndicator),
       );
 
@@ -152,8 +154,7 @@ void main() {
       expect(container.padding, const EdgeInsets.all(20));
     });
 
-    testWidgets('should have rounded corners on progress bars',
-        (tester) async {
+    testWidgets('should have rounded corners on progress bars', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest(tPokemon));
 
       final clipRRects = tester.widgetList<ClipRRect>(
@@ -195,7 +196,7 @@ void main() {
     testWidgets('should display stats with zero spawn chance', (tester) async {
       const pokemonWithZeroSpawn = Pokemon(
         id: 150,
-        num: '150',
+        pokeNum: '150',
         name: 'Mewtwo',
         img: 'http://test.png',
         type: ['Psychic'],
@@ -218,7 +219,7 @@ void main() {
     testWidgets('should handle high spawn chance correctly', (tester) async {
       const pokemonWithHighSpawn = Pokemon(
         id: 16,
-        num: '016',
+        pokeNum: '016',
         name: 'Pidgey',
         img: 'http://test.png',
         type: ['Normal', 'Flying'],
@@ -240,11 +241,12 @@ void main() {
       expect(find.text('99.9'), findsOneWidget);
     });
 
-    testWidgets('should normalize values correctly for progress bars',
-        (tester) async {
+    testWidgets('should normalize values correctly for progress bars', (
+      tester,
+    ) async {
       const pokemonWithExtremeValues = Pokemon(
         id: 143,
-        num: '143',
+        pokeNum: '143',
         name: 'Snorlax',
         img: 'http://test.png',
         type: ['Normal'],
@@ -264,8 +266,7 @@ void main() {
       );
       await tester.pump();
 
-      final progressIndicators =
-          tester.widgetList<LinearProgressIndicator>(
+      final progressIndicators = tester.widgetList<LinearProgressIndicator>(
         find.byType(LinearProgressIndicator),
       );
 

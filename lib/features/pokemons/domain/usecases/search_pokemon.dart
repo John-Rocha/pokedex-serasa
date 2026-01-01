@@ -22,7 +22,7 @@ class SearchPokemon {
       (pokemons) {
         final filteredPokemons = pokemons.where((pokemon) {
           final nameLower = pokemon.name.toLowerCase();
-          final numLower = pokemon.num.toLowerCase();
+          final numLower = pokemon.pokeNum.toLowerCase();
           final queryLower = query.toLowerCase().trim();
 
           return nameLower.contains(queryLower) ||

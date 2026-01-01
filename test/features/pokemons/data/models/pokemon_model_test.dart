@@ -67,7 +67,7 @@ void main() {
 
         expect(result, isA<Pokemon>());
         expect(result.id, tPokemonModel.id);
-        expect(result.num, tPokemonModel.num);
+        expect(result.pokeNum, tPokemonModel.num);
         expect(result.name, tPokemonModel.name);
         expect(result.img, tPokemonModel.img);
         expect(result.type, tPokemonModel.type);

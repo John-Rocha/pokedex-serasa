@@ -96,7 +96,7 @@ void main() {
     const tPokemons = [
       Pokemon(
         id: 1,
-        num: '001',
+        pokeNum: '001',
         name: 'Bulbasaur',
         img: 'http://test.png',
         type: ['Grass', 'Poison'],
@@ -111,7 +111,7 @@ void main() {
       ),
       Pokemon(
         id: 2,
-        num: '002',
+        pokeNum: '002',
         name: 'Ivysaur',
         img: 'http://test2.png',
         type: ['Grass', 'Poison'],

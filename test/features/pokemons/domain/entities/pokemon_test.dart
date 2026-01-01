@@ -26,7 +26,7 @@ void main() {
   group('Pokemon', () {
     const tPokemon = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://www.serebii.net/pokemongo/pokemon/001.png',
       type: ['Grass', 'Poison'],
@@ -47,7 +47,7 @@ void main() {
       // Arrange
       const pokemon1 = Pokemon(
         id: 1,
-        num: '001',
+        pokeNum: '001',
         name: 'Bulbasaur',
         img: 'http://www.serebii.net/pokemongo/pokemon/001.png',
         type: ['Grass', 'Poison'],
@@ -63,7 +63,7 @@ void main() {
 
       const pokemon2 = Pokemon(
         id: 1,
-        num: '001',
+        pokeNum: '001',
         name: 'Bulbasaur',
         img: 'http://www.serebii.net/pokemongo/pokemon/001.png',
         type: ['Grass', 'Poison'],
@@ -79,7 +79,7 @@ void main() {
 
       const pokemon3 = Pokemon(
         id: 2,
-        num: '002',
+        pokeNum: '002',
         name: 'Ivysaur',
         img: 'http://www.serebii.net/pokemongo/pokemon/002.png',
         type: ['Grass', 'Poison'],
@@ -101,7 +101,7 @@ void main() {
     test('should have all required properties', () {
       // Assert
       expect(tPokemon.id, 1);
-      expect(tPokemon.num, '001');
+      expect(tPokemon.pokeNum, '001');
       expect(tPokemon.name, 'Bulbasaur');
       expect(tPokemon.img, 'http://www.serebii.net/pokemongo/pokemon/001.png');
       expect(tPokemon.type, ['Grass', 'Poison']);
@@ -124,7 +124,7 @@ void main() {
       // Arrange
       const pokemonWithoutOptionals = Pokemon(
         id: 1,
-        num: '001',
+        pokeNum: '001',
         name: 'Bulbasaur',
         img: 'http://www.serebii.net/pokemongo/pokemon/001.png',
         type: ['Grass', 'Poison'],

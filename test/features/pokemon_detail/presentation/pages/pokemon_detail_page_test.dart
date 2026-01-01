@@ -15,7 +15,7 @@ void main() {
   group('PokemonDetailPage Widget Tests', () {
     const tPokemonWithEvolutions = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -36,7 +36,7 @@ void main() {
 
     const tIvysaur = Pokemon(
       id: 2,
-      num: '002',
+      pokeNum: '002',
       name: 'Ivysaur',
       img: 'http://test2.png',
       type: ['Grass', 'Poison'],
@@ -52,7 +52,7 @@ void main() {
 
     const tVenusaur = Pokemon(
       id: 3,
-      num: '003',
+      pokeNum: '003',
       name: 'Venusaur',
       img: 'http://test3.png',
       type: ['Grass', 'Poison'],
@@ -68,7 +68,7 @@ void main() {
 
     const tPokemonWithoutEvolutions = Pokemon(
       id: 25,
-      num: '025',
+      pokeNum: '025',
       name: 'Pikachu',
       img: 'http://test.png',
       type: ['Electric'],

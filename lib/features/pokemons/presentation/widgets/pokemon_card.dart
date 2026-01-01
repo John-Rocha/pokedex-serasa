@@ -22,7 +22,8 @@ class PokemonCard extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: onTap != null,
-      label: 'Pokémon ${pokemon.name}, número ${pokemon.num}, tipos: $typesText',
+      label:
+          'Pokémon ${pokemon.name}, número ${pokemon.pokeNum}, tipos: $typesText',
       hint: 'Toque duas vezes para ver detalhes',
       child: GestureDetector(
         onTap: onTap,
@@ -61,7 +62,9 @@ class PokemonCard extends StatelessWidget {
                               ),
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(typeColor),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    typeColor,
+                                  ),
                                   strokeWidth: 2,
                                 ),
                               ),
@@ -94,7 +97,7 @@ class PokemonCard extends StatelessWidget {
                   children: [
                     ExcludeSemantics(
                       child: Text(
-                        '#${pokemon.num}',
+                        '#${pokemon.pokeNum}',
                         style: TextStyle(
                           fontSize: 10,
                           color: Colors.grey[600],

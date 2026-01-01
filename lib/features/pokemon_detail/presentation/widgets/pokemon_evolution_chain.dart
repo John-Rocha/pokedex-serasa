@@ -47,7 +47,7 @@ class PokemonEvolutionChain extends StatelessWidget {
                 ...pokemon.prevEvolution!.map(
                   (evolution) {
                     final relatedPokemon = allPokemons?.firstWhere(
-                      (p) => p.num == evolution.pokeNum,
+                      (p) => p.pokeNum == evolution.pokeNum,
                     );
                     if (relatedPokemon == null) {
                       return const SizedBox.shrink();
@@ -85,7 +85,7 @@ class PokemonEvolutionChain extends StatelessWidget {
                 ...pokemon.nextEvolution!.map(
                   (evolution) {
                     final relatedPokemon = allPokemons?.firstWhere(
-                      (p) => p.num == evolution.pokeNum,
+                      (p) => p.pokeNum == evolution.pokeNum,
                     );
                     if (relatedPokemon == null) {
                       return const SizedBox.shrink();

@@ -8,7 +8,7 @@ void main() {
   group('PokemonCard Widget Tests', () {
     const tPokemon = Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -65,7 +65,7 @@ void main() {
 
     testWidgets('should call onTap when card is tapped', (tester) async {
       bool wasTapped = false;
-      
+
       await tester.pumpWidget(
         createWidgetUnderTest(
           onTap: () => wasTapped = true,
@@ -78,35 +78,39 @@ void main() {
       expect(wasTapped, true);
     });
 
-    testWidgets('should display only first two types when pokemon has more than 2 types',
-        (tester) async {
-      const pokemonWithManyTypes = Pokemon(
-        id: 1,
-        num: '001',
-        name: 'Test',
-        img: 'http://test.png',
-        type: ['Type1', 'Type2', 'Type3', 'Type4'],
-        height: '1 m',
-        weight: '10 kg',
-        candy: 'Candy',
-        egg: '2 km',
-        spawnChance: 0.5,
-        avgSpawns: 50,
-        spawnTime: '12:00',
-        weaknesses: ['Fire'],
-      );
+    testWidgets(
+      'should display only first two types when pokemon has more than 2 types',
+      (tester) async {
+        const pokemonWithManyTypes = Pokemon(
+          id: 1,
+          pokeNum: '001',
+          name: 'Test',
+          img: 'http://test.png',
+          type: ['Type1', 'Type2', 'Type3', 'Type4'],
+          height: '1 m',
+          weight: '10 kg',
+          candy: 'Candy',
+          egg: '2 km',
+          spawnChance: 0.5,
+          avgSpawns: 50,
+          spawnTime: '12:00',
+          weaknesses: ['Fire'],
+        );
 
-      await tester.pumpWidget(
-        createWidgetUnderTest(pokemon: pokemonWithManyTypes),
-      );
+        await tester.pumpWidget(
+          createWidgetUnderTest(pokemon: pokemonWithManyTypes),
+        );
 
-      expect(find.text('Type1'), findsOneWidget);
-      expect(find.text('Type2'), findsOneWidget);
-      expect(find.text('Type3'), findsNothing);
-      expect(find.text('Type4'), findsNothing);
-    });
+        expect(find.text('Type1'), findsOneWidget);
+        expect(find.text('Type2'), findsOneWidget);
+        expect(find.text('Type3'), findsNothing);
+        expect(find.text('Type4'), findsNothing);
+      },
+    );
 
-    testWidgets('should have CachedNetworkImage with error handling', (tester) async {
+    testWidgets('should have CachedNetworkImage with error handling', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       await tester.pump();
@@ -114,15 +118,18 @@ void main() {
       expect(find.byType(CachedNetworkImage), findsOneWidget);
     });
 
-    testWidgets('should display correct background color for Grass type',
-        (tester) async {
+    testWidgets('should display correct background color for Grass type', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       final container = tester.widget<Container>(
-        find.ancestor(
-          of: find.text('Bulbasaur'),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .ancestor(
+              of: find.text('Bulbasaur'),
+              matching: find.byType(Container),
+            )
+            .first,
       );
 
       final decoration = container.decoration as BoxDecoration;

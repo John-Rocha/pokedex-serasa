@@ -115,7 +115,7 @@ class PokemonModel extends Equatable {
   Pokemon toEntity() {
     return Pokemon(
       id: id,
-      num: num,
+      pokeNum: num,
       name: name,
       img: img,
       type: type,

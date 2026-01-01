@@ -77,8 +77,8 @@ class PokemonHeaderWidget extends StatelessWidget {
                           ),
                         ] else ...[
                           Text(
-                            pokemon?.num != null
-                                ? '#${pokemon!.num.padLeft(3, '0')}'
+                            pokemon?.pokeNum != null
+                                ? '#${pokemon!.pokeNum.padLeft(3, '0')}'
                                 : '',
                             style: AppTextStyles.appBarTitle.copyWith(
                               color: Colors.white70,
@@ -113,8 +113,9 @@ class PokemonHeaderWidget extends StatelessWidget {
                                 width: double.infinity,
                                 height: MediaQuery.sizeOf(context).height * 0.5,
                                 decoration: BoxDecoration(
-                                  color: (foregroundColor ?? AppColors.primaryRed)
-                                      .withAlpha(13),
+                                  color:
+                                      (foregroundColor ?? AppColors.primaryRed)
+                                          .withAlpha(13),
                                 ),
                                 child: Center(
                                   child: CircularProgressIndicator(
