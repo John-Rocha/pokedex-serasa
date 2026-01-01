@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class Evolution extends Equatable {
-  final String num;
+  final String pokeNum;
   final String name;
 
   const Evolution({
-    required this.num,
+    required this.pokeNum,
     required this.name,
   });
 
   @override
-  List<Object?> get props => [num, name];
+  List<Object?> get props => [pokeNum, name];
 }
 
 class Pokemon extends Equatable {

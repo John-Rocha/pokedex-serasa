@@ -29,8 +29,8 @@ void main() {
       spawnTime: '20:00',
       weaknesses: ['Fire', 'Ice', 'Flying', 'Psychic'],
       nextEvolution: [
-        Evolution(num: '002', name: 'Ivysaur'),
-        Evolution(num: '003', name: 'Venusaur'),
+        Evolution(pokeNum: '002', name: 'Ivysaur'),
+        Evolution(pokeNum: '003', name: 'Venusaur'),
       ],
     );
 

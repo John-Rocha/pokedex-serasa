@@ -5,9 +5,9 @@ void main() {
   group('Evolution', () {
     test('should support value equality', () {
       // Arrange
-      const evolution1 = Evolution(num: '002', name: 'Ivysaur');
-      const evolution2 = Evolution(num: '002', name: 'Ivysaur');
-      const evolution3 = Evolution(num: '003', name: 'Venusaur');
+      const evolution1 = Evolution(pokeNum: '002', name: 'Ivysaur');
+      const evolution2 = Evolution(pokeNum: '002', name: 'Ivysaur');
+      const evolution3 = Evolution(pokeNum: '003', name: 'Venusaur');
 
       // Assert
       expect(evolution1, equals(evolution2));
@@ -16,7 +16,7 @@ void main() {
 
     test('should have correct props', () {
       // Arrange
-      const evolution = Evolution(num: '002', name: 'Ivysaur');
+      const evolution = Evolution(pokeNum: '002', name: 'Ivysaur');
 
       // Assert
       expect(evolution.props, ['002', 'Ivysaur']);
@@ -40,7 +40,7 @@ void main() {
       spawnTime: '20:00',
       multipliers: [1.58],
       weaknesses: ['Fire', 'Ice', 'Flying', 'Psychic'],
-      nextEvolution: [Evolution(num: '002', name: 'Ivysaur')],
+      nextEvolution: [Evolution(pokeNum: '002', name: 'Ivysaur')],
     );
 
     test('should support value equality', () {
@@ -116,7 +116,7 @@ void main() {
       expect(tPokemon.multipliers, [1.58]);
       expect(tPokemon.weaknesses, ['Fire', 'Ice', 'Flying', 'Psychic']);
       expect(tPokemon.nextEvolution, [
-        const Evolution(num: '002', name: 'Ivysaur'),
+        const Evolution(pokeNum: '002', name: 'Ivysaur'),
       ]);
     });
 

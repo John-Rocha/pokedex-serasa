@@ -21,8 +21,8 @@ void main() {
       spawnTime: '20:00',
       weaknesses: ['Fire'],
       nextEvolution: [
-        Evolution(num: '002', name: 'Ivysaur'),
-        Evolution(num: '003', name: 'Venusaur'),
+        Evolution(pokeNum: '002', name: 'Ivysaur'),
+        Evolution(pokeNum: '003', name: 'Venusaur'),
       ],
     );
 
@@ -41,10 +41,10 @@ void main() {
       spawnTime: '07:00',
       weaknesses: ['Fire'],
       prevEvolution: [
-        Evolution(num: '001', name: 'Bulbasaur'),
+        Evolution(pokeNum: '001', name: 'Bulbasaur'),
       ],
       nextEvolution: [
-        Evolution(num: '003', name: 'Venusaur'),
+        Evolution(pokeNum: '003', name: 'Venusaur'),
       ],
     );
 
@@ -63,8 +63,8 @@ void main() {
       spawnTime: '11:30',
       weaknesses: ['Fire'],
       prevEvolution: [
-        Evolution(num: '001', name: 'Bulbasaur'),
-        Evolution(num: '002', name: 'Ivysaur'),
+        Evolution(pokeNum: '001', name: 'Bulbasaur'),
+        Evolution(pokeNum: '002', name: 'Ivysaur'),
       ],
     );
 
@@ -100,8 +100,9 @@ void main() {
       );
     }
 
-    testWidgets('should display section title when pokemon has evolutions',
-        (tester) async {
+    testWidgets('should display section title when pokemon has evolutions', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(
           pokemon: tBulbasaur,
@@ -112,8 +113,9 @@ void main() {
       expect(find.text('Relacionados'), findsOneWidget);
     });
 
-    testWidgets('should not display anything when pokemon has no evolutions',
-        (tester) async {
+    testWidgets('should not display anything when pokemon has no evolutions', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(
           pokemon: tPikachu,
@@ -125,8 +127,9 @@ void main() {
       expect(find.byType(PokemonCard), findsNothing);
     });
 
-    testWidgets('should display PokemonCards for next evolutions',
-        (tester) async {
+    testWidgets('should display PokemonCards for next evolutions', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(
           pokemon: tBulbasaur,
@@ -140,8 +143,9 @@ void main() {
       expect(find.text('Venusaur'), findsOneWidget);
     });
 
-    testWidgets('should display PokemonCards for previous evolutions',
-        (tester) async {
+    testWidgets('should display PokemonCards for previous evolutions', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(
           pokemon: tVenusaur,
@@ -169,8 +173,9 @@ void main() {
       expect(find.text('Venusaur'), findsOneWidget);
     });
 
-    testWidgets('should not display cards when allPokemons is null',
-        (tester) async {
+    testWidgets('should not display cards when allPokemons is null', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createWidgetUnderTest(
           pokemon: tBulbasaur,

@@ -40,88 +40,88 @@ class PokemonEvolutionChain extends StatelessWidget {
             ),
           ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (pokemon.prevEvolution != null)
-              ...pokemon.prevEvolution!.map(
-                (evolution) {
-                  final relatedPokemon = allPokemons?.firstWhere(
-                    (p) => p.num == evolution.num,
-                  );
-                  if (relatedPokemon == null) {
-                    return const SizedBox.shrink();
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SizedBox(
-                      height: 200,
-                      child: PokemonCard(
-                        pokemon: relatedPokemon,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (pokemon.prevEvolution != null)
+                ...pokemon.prevEvolution!.map(
+                  (evolution) {
+                    final relatedPokemon = allPokemons?.firstWhere(
+                      (p) => p.num == evolution.pokeNum,
+                    );
+                    if (relatedPokemon == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: SizedBox(
+                        height: 200,
+                        child: PokemonCard(
+                          pokemon: relatedPokemon,
 
-                        onTap: () {
-                          final logPokemonViewUseCase =
-                              Modular.get<LogPokemonViewUseCase>();
-                          logPokemonViewUseCase(
-                            pokemonId: relatedPokemon.id,
-                            pokemonName: relatedPokemon.name,
-                            types: relatedPokemon.type,
-                          );
+                          onTap: () {
+                            final logPokemonViewUseCase =
+                                Modular.get<LogPokemonViewUseCase>();
+                            logPokemonViewUseCase(
+                              pokemonId: relatedPokemon.id,
+                              pokemonName: relatedPokemon.name,
+                              types: relatedPokemon.type,
+                            );
 
-                          Navigator.of(context).pushNamed(
-                            '/pokemon-detail/',
-                            arguments: {
-                              'pokemon': relatedPokemon,
-                              'allPokemons': allPokemons,
-                            },
-                          );
-                        },
+                            Navigator.of(context).pushNamed(
+                              '/pokemon-detail/',
+                              arguments: {
+                                'pokemon': relatedPokemon,
+                                'allPokemons': allPokemons,
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            if (pokemon.nextEvolution != null)
-              ...pokemon.nextEvolution!.map(
-                (evolution) {
-                  final relatedPokemon = allPokemons?.firstWhere(
-                    (p) => p.num == evolution.num,
-                  );
-                  if (relatedPokemon == null) {
-                    return const SizedBox.shrink();
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SizedBox(
-                      height: 200,
-                      child: PokemonCard(
-                        pokemon: relatedPokemon,
+                    );
+                  },
+                ),
+              if (pokemon.nextEvolution != null)
+                ...pokemon.nextEvolution!.map(
+                  (evolution) {
+                    final relatedPokemon = allPokemons?.firstWhere(
+                      (p) => p.num == evolution.pokeNum,
+                    );
+                    if (relatedPokemon == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: SizedBox(
+                        height: 200,
+                        child: PokemonCard(
+                          pokemon: relatedPokemon,
 
-                        onTap: () {
-                          final logPokemonViewUseCase =
-                              Modular.get<LogPokemonViewUseCase>();
-                          logPokemonViewUseCase(
-                            pokemonId: relatedPokemon.id,
-                            pokemonName: relatedPokemon.name,
-                            types: relatedPokemon.type,
-                          );
+                          onTap: () {
+                            final logPokemonViewUseCase =
+                                Modular.get<LogPokemonViewUseCase>();
+                            logPokemonViewUseCase(
+                              pokemonId: relatedPokemon.id,
+                              pokemonName: relatedPokemon.name,
+                              types: relatedPokemon.type,
+                            );
 
-                          Navigator.of(context).pushNamed(
-                            '/pokemon-detail/',
-                            arguments: {
-                              'pokemon': relatedPokemon,
-                              'allPokemons': allPokemons,
-                            },
-                          );
-                        },
+                            Navigator.of(context).pushNamed(
+                              '/pokemon-detail/',
+                              arguments: {
+                                'pokemon': relatedPokemon,
+                                'allPokemons': allPokemons,
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ),
-      ],
+                    );
+                  },
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

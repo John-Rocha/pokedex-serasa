@@ -28,7 +28,7 @@ class EvolutionModel extends Equatable {
 
   Evolution toEntity() {
     return Evolution(
-      num: num,
+      pokeNum: num,
       name: name,
     );
   }

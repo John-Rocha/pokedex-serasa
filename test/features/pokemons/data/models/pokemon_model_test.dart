@@ -29,7 +29,9 @@ void main() {
   group('PokemonModel', () {
     group('fromJson', () {
       test('should return a valid model from JSON', () {
-        final Map<String, dynamic> jsonMap = json.decode(fixture('pokemon_fixture.json'));
+        final Map<String, dynamic> jsonMap = json.decode(
+          fixture('pokemon_fixture.json'),
+        );
         final result = PokemonModel.fromJson(jsonMap);
         expect(result, tPokemonModel);
       });
@@ -62,7 +64,7 @@ void main() {
     group('toEntity', () {
       test('should return a Pokemon entity with correct data', () {
         final result = tPokemonModel.toEntity();
-        
+
         expect(result, isA<Pokemon>());
         expect(result.id, tPokemonModel.id);
         expect(result.num, tPokemonModel.num);
@@ -88,9 +90,9 @@ void main() {
 
     test('toEntity should return an Evolution entity', () {
       final result = tEvolutionModel.toEntity();
-      
+
       expect(result, isA<Evolution>());
-      expect(result.num, '002');
+      expect(result.pokeNum, '002');
       expect(result.name, 'Ivysaur');
     });
   });
