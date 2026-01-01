@@ -20,7 +20,7 @@ void main() {
   const tPokemons = [
     Pokemon(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],
@@ -35,7 +35,7 @@ void main() {
     ),
     Pokemon(
       id: 2,
-      num: '002',
+      pokeNum: '002',
       name: 'Ivysaur',
       img: 'http://test2.png',
       type: ['Grass', 'Poison'],
@@ -50,7 +50,7 @@ void main() {
     ),
     Pokemon(
       id: 25,
-      num: '025',
+      pokeNum: '025',
       name: 'Pikachu',
       img: 'http://test3.png',
       type: ['Electric'],
@@ -224,8 +224,8 @@ void main() {
         (failure) => fail('Should not return failure'),
         (pokemons) {
           expect(pokemons.length, 2);
-          expect(pokemons[0].num, '002');
-          expect(pokemons[1].num, '025');
+          expect(pokemons[0].pokeNum, '002');
+          expect(pokemons[1].pokeNum, '025');
         },
       );
     });

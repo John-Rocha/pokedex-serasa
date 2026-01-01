@@ -15,7 +15,7 @@ void main() {
         const pokemons = [
           Pokemon(
             id: 1,
-            num: '001',
+            pokeNum: '001',
             name: 'Bulbasaur',
             img: 'http://test.png',
             type: ['Grass', 'Poison'],
@@ -39,7 +39,7 @@ void main() {
         const pokemons = [
           Pokemon(
             id: 1,
-            num: '001',
+            pokeNum: '001',
             name: 'Bulbasaur',
             img: 'http://test.png',
             type: ['Grass', 'Poison'],
@@ -54,7 +54,7 @@ void main() {
           ),
           Pokemon(
             id: 4,
-            num: '004',
+            pokeNum: '004',
             name: 'Charmander',
             img: 'http://test.png',
             type: ['Fire'],
@@ -69,7 +69,7 @@ void main() {
           ),
           Pokemon(
             id: 7,
-            num: '007',
+            pokeNum: '007',
             name: 'Squirtle',
             img: 'http://test.png',
             type: ['Water'],
@@ -93,7 +93,7 @@ void main() {
         const pokemons = [
           Pokemon(
             id: 1,
-            num: '001',
+            pokeNum: '001',
             name: 'Bulbasaur',
             img: 'http://test.png',
             type: ['Grass', 'Poison'],
@@ -108,7 +108,7 @@ void main() {
           ),
           Pokemon(
             id: 2,
-            num: '002',
+            pokeNum: '002',
             name: 'Ivysaur',
             img: 'http://test.png',
             type: ['Grass', 'Poison'],
@@ -123,7 +123,7 @@ void main() {
           ),
           Pokemon(
             id: 4,
-            num: '004',
+            pokeNum: '004',
             name: 'Charmander',
             img: 'http://test.png',
             type: ['Fire'],
@@ -148,7 +148,7 @@ void main() {
         const pokemons = [
           Pokemon(
             id: 25,
-            num: '025',
+            pokeNum: '025',
             name: 'Pikachu',
             img: 'http://test.png',
             type: ['Electric'],
@@ -172,7 +172,7 @@ void main() {
         const pokemons = [
           Pokemon(
             id: 1,
-            num: '001',
+            pokeNum: '001',
             name: 'Test1',
             img: 'http://test.png',
             type: ['Water', 'Fire', 'Grass', 'Electric'],

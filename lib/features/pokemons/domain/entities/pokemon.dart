@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 
 class Evolution extends Equatable {
-  final String num;
+  final String pokeNum;
   final String name;
 
   const Evolution({
-    required this.num,
+    required this.pokeNum,
     required this.name,
   });
 
   @override
-  List<Object?> get props => [num, name];
+  List<Object?> get props => [pokeNum, name];
 }
 
 class Pokemon extends Equatable {
   final int id;
-  final String num;
+  final String pokeNum;
   final String name;
   final String img;
   final List<String> type;
@@ -34,7 +34,7 @@ class Pokemon extends Equatable {
 
   const Pokemon({
     required this.id,
-    required this.num,
+    required this.pokeNum,
     required this.name,
     required this.img,
     required this.type,
@@ -55,7 +55,7 @@ class Pokemon extends Equatable {
   @override
   List<Object?> get props => [
     id,
-    num,
+    pokeNum,
     name,
     img,
     type,

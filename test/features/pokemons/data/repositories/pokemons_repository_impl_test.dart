@@ -26,10 +26,10 @@ void main() {
     );
   });
 
-  const tPokemonModels = [
+  const tPokemonModels = <PokemonModel>[
     PokemonModel(
       id: 1,
-      num: '001',
+      pokeNum: '001',
       name: 'Bulbasaur',
       img: 'http://test.png',
       type: ['Grass', 'Poison'],

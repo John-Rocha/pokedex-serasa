@@ -9,7 +9,7 @@ import '../../../../helpers/fixture_reader.dart';
 void main() {
   const tPokemonModel = PokemonModel(
     id: 1,
-    num: '001',
+    pokeNum: '001',
     name: 'Bulbasaur',
     img: 'http://www.serebii.net/pokemongo/pokemon/001.png',
     type: ['Grass', 'Poison'],
@@ -23,13 +23,15 @@ void main() {
     spawnTime: '20:00',
     multipliers: [1.58],
     weaknesses: ['Fire', 'Ice', 'Flying', 'Psychic'],
-    nextEvolution: [EvolutionModel(num: '002', name: 'Ivysaur')],
+    nextEvolution: [EvolutionModel(pokeNum: '002', name: 'Ivysaur')],
   );
 
   group('PokemonModel', () {
     group('fromJson', () {
       test('should return a valid model from JSON', () {
-        final Map<String, dynamic> jsonMap = json.decode(fixture('pokemon_fixture.json'));
+        final Map<String, dynamic> jsonMap = json.decode(
+          fixture('pokemon_fixture.json'),
+        );
         final result = PokemonModel.fromJson(jsonMap);
         expect(result, tPokemonModel);
       });
@@ -62,10 +64,10 @@ void main() {
     group('toEntity', () {
       test('should return a Pokemon entity with correct data', () {
         final result = tPokemonModel.toEntity();
-        
+
         expect(result, isA<Pokemon>());
         expect(result.id, tPokemonModel.id);
-        expect(result.num, tPokemonModel.num);
+        expect(result.pokeNum, tPokemonModel.pokeNum);
         expect(result.name, tPokemonModel.name);
         expect(result.img, tPokemonModel.img);
         expect(result.type, tPokemonModel.type);
@@ -74,7 +76,7 @@ void main() {
   });
 
   group('EvolutionModel', () {
-    const tEvolutionModel = EvolutionModel(num: '002', name: 'Ivysaur');
+    const tEvolutionModel = EvolutionModel(pokeNum: '002', name: 'Ivysaur');
 
     test('fromJson should return a valid model', () {
       final Map<String, dynamic> jsonMap = {
@@ -88,9 +90,9 @@ void main() {
 
     test('toEntity should return an Evolution entity', () {
       final result = tEvolutionModel.toEntity();
-      
+
       expect(result, isA<Evolution>());
-      expect(result.num, '002');
+      expect(result.pokeNum, '002');
       expect(result.name, 'Ivysaur');
     });
   });

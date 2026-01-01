@@ -105,7 +105,7 @@ void main() {
       test('should support value equality', () {
         const pokemon1 = PokemonModel(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -128,7 +128,7 @@ void main() {
       test('should not be equal when pokemon lists are different', () {
         const pokemon1 = PokemonModel(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -144,7 +144,7 @@ void main() {
 
         const pokemon2 = PokemonModel(
           id: 2,
-          num: '002',
+          pokeNum: '002',
           name: 'Ivysaur',
           img: 'http://test2.png',
           type: ['Grass'],
@@ -167,7 +167,7 @@ void main() {
       test('should not be equal when list sizes are different', () {
         const pokemon1 = PokemonModel(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -199,7 +199,7 @@ void main() {
       test('should have correct props', () {
         const pokemon = PokemonModel(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -231,7 +231,7 @@ void main() {
       test('should create instance with pokemon list', () {
         const pokemon = PokemonModel(
           id: 1,
-          num: '001',
+          pokeNum: '001',
           name: 'Bulbasaur',
           img: 'http://test.png',
           type: ['Grass'],
@@ -269,14 +269,14 @@ void main() {
 
         // Check Bulbasaur
         expect(result.pokemon[0].id, 1);
-        expect(result.pokemon[0].num, '001');
+        expect(result.pokemon[0].pokeNum, '001');
         expect(result.pokemon[0].name, 'Bulbasaur');
         expect(result.pokemon[0].type, contains('Grass'));
         expect(result.pokemon[0].type, contains('Poison'));
 
         // Check Ivysaur
         expect(result.pokemon[1].id, 2);
-        expect(result.pokemon[1].num, '002');
+        expect(result.pokemon[1].pokeNum, '002');
         expect(result.pokemon[1].name, 'Ivysaur');
         expect(result.pokemon[1].type, contains('Grass'));
         expect(result.pokemon[1].type, contains('Poison'));
@@ -313,7 +313,7 @@ void main() {
         // Verify pokemon data
         final pikachu = response.pokemon[0];
         expect(pikachu.name, 'Pikachu');
-        expect(pikachu.num, '025');
+        expect(pikachu.pokeNum, '025');
         expect(pikachu.type, ['Electric']);
         expect(pikachu.weaknesses, ['Ground']);
       });
